@@ -2,3 +2,5 @@ __pycache__/
 *.py[cod]
 
 scrapy.cfg
+
+logs/
