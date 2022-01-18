@@ -6,8 +6,25 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
+from scrapy.exceptions import DropItem
 
+class OzbPipeline:
+    wish_list = [
+        'Nintendo',
+        'LEGO',
+        'Xiaomi',
+        '3080'
+        # 'Coles',
+        # 'Woolworths'
+    ]
 
-class CrawlerPipeline:
+    print(wish_list)
+
     def process_item(self, item, spider):
-        return item
+        for wish_item in OzbPipeline.wish_list:
+            if(wish_item in item['name'] and item['tag'] is None):
+                return item
+            else:
+                raise DropItem(f'Filter out non compliance item')
+
+        

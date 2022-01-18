@@ -1,6 +1,7 @@
 import scrapy
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
+from crawler.items import OzbItem
 
 base_url = "https://www.ozbargain.com.au"
 
@@ -8,10 +9,9 @@ class OzbCrawler(CrawlSpider):
     name = "ozb"
     page = 10
     wish_list = [
-        'Nintendo', 
-        '3080', 
-        'LEGO',
-        'Credit Card',
+        'Nintendo',
+        'LEGO',        
+        'Xiaomi'
     ]
     
     def start_requests(self):
@@ -53,14 +53,7 @@ class OzbCrawler(CrawlSpider):
 
     def get_wish(self, wish_item, item_tag, item_name, item_price, item_link, item_time):        
         if(wish_item in item_name and item_tag is None):
-            match_entry = {
-                'tag': item_tag,
-                'name': item_name,
-                'price': item_price,
-                'link': f'{base_url}{item_link}',
-                'time': self.formatTime(item_time),
-            }
-
+            match_entry = OzbItem (tag = item_tag, name = item_name, price = item_price, link = item_link, time = item_time)
             return match_entry
 
     def formatTime(self, timeStr):
