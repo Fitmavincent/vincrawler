@@ -40,22 +40,28 @@ class OzbCrawler(CrawlSpider):
             NAME_SELECTOR = 'h2 ::text'
             PRICE_SELECTOR = 'em ::text'
             HREF_SELECTOR = 'a ::attr(href)'
+            TIME_SELECTOR = '//div[@class="submitted"]/text()'
 
             item_tag = item.css(TAG_SELECTOR).get() # Check any expired deal
             item_name = item.css(NAME_SELECTOR).get()
             item_price = item.css(PRICE_SELECTOR).get()
             item_link = item.css(HREF_SELECTOR).get()
+            item_time = item.xpath(TIME_SELECTOR).get()            
 
             for wish_item in OzbCrawler.wish_list:
-                yield self.get_wish(wish_item, item_tag, item_name, item_price, item_link)      
+                yield self.get_wish(wish_item, item_tag, item_name, item_price, item_link, item_time)      
 
-    def get_wish(self, wish_item, item_tag, item_name, item_price, item_link):        
+    def get_wish(self, wish_item, item_tag, item_name, item_price, item_link, item_time):        
         if(wish_item in item_name and item_tag is None):
             match_entry = {
                 'tag': item_tag,
                 'name': item_name,
                 'price': item_price,
-                'link': f'{base_url}{item_link}'
+                'link': f'{base_url}{item_link}',
+                'time': self.formatTime(item_time),
             }
 
             return match_entry
+
+    def formatTime(self, timeStr):
+        return timeStr.replace(" on ", "").strip()

@@ -6,4 +6,4 @@ services:
     ports:
     - "9080:9080"
     volumes:
-      - usr/src/app
+      - /usr/src/app
