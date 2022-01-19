@@ -10,6 +10,7 @@
 export default {
     mounted() {
         console.log("Result Mounted", this.resultUrl)
+        this.getCrawlerResult();
     },
     data() {
         return {
@@ -17,7 +18,12 @@ export default {
         };
     },
     methods: {
-        
+        getCrawlerResult () {
+            this.axios.get(this.resultUrl)
+            .then((res) => {
+                console.log(res)
+            })
+        }
     },
 }
 </script>
