@@ -2,6 +2,7 @@
 
 START_CRAWLER='n'
 END_CRAWLER='n'
+START_VUE_APP='n'
 
 if [ $# -eq 0 ]
 then
@@ -17,6 +18,9 @@ else
         then
             END_CRAWLER='y'
             echo "End Web Crawler"
+        elif [ "$arg" == '-vue' ] || [ "$arg" == '-rf' ]
+        then
+            START_VUE_APP='y'
         fi
     done
 fi
@@ -30,4 +34,11 @@ fi
 if [ $END_CRAWLER == 'y' ]
 then
     docker-compose down --rmi all -v
+fi
+
+if [ $START_VUE_APP == 'y' ]
+then
+    cd crawler-app 
+    npm install
+    npm run dev
 fi
