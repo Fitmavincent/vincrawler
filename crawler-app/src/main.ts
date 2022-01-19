@@ -4,7 +4,6 @@ import PrimeVue from 'primevue/config'
 import Dialog from 'primevue/dialog'
 import DataTable from 'primevue/datatable'
 
-// createApp(App).mount('#app')
 const app = createApp(App)
 const components = import.meta.globEager('./components/*.vue')
 
