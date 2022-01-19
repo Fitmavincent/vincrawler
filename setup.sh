@@ -23,10 +23,11 @@ fi
 
 if [ $START_CRAWLER == 'y' ]
 then
-    docker-compose up -d --build crawler
+    docker-compose build --no-cache
+    docker-compose up -d
 fi
 
 if [ $END_CRAWLER == 'y' ]
 then
-    docker-compose down
+    docker-compose down --rmi all -v
 fi

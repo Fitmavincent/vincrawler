@@ -1,3 +1,4 @@
+from datetime import datetime
 import scrapy
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
@@ -10,8 +11,9 @@ class OzbCrawler(CrawlSpider):
     page = 10
     wish_list = [
         'Nintendo',
-        'LEGO',        
-        'Xiaomi'
+        'LEGO',
+        'Xiaomi',
+        '3080'
     ]
     
     def start_requests(self):
@@ -53,8 +55,10 @@ class OzbCrawler(CrawlSpider):
 
     def get_wish(self, wish_item, item_tag, item_name, item_price, item_link, item_time):        
         if(wish_item in item_name and item_tag is None):
-            match_entry = OzbItem (tag = item_tag, name = item_name, price = item_price, link = item_link, time = item_time)
+            match_entry = OzbItem (tag = item_tag, name = item_name, price = item_price, link = item_link, time = self.formatTime(item_time))
             return match_entry
 
     def formatTime(self, timeStr):
-        return timeStr.replace(" on ", "").strip()
+        stripStr = timeStr.replace(" on ", "").strip()
+        datetime_object = datetime.strptime(stripStr, '%d/%m/%Y - %H:%M')
+        return datetime_object
