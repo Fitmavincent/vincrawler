@@ -11,9 +11,16 @@ class OzbCrawler(CrawlSpider):
     page = 10
     wish_list = [
         'Nintendo',
+        'LEGO',
+        'Xiaomi'
     ]
     
-    def start_requests(self):
+    def start_requests(self, *args):
+        
+        # OzbCrawler.wish_list = self.wishes
+        if hasattr(self, 'wishes'):
+            OzbCrawler.wish_list = self.wishes.split(',')
+        
         urls = [
             base_url
         ]
