@@ -7,10 +7,15 @@
             Products
             <Button icon="pi pi-refresh" />
         </div>
-      </template>      
+      </template>
+      <column field="image">
+        <template #body="slotProps">
+          <img :src="slotProps.data.image" :alt="slotProps.data.image">
+        </template>
+      </column>
       <column field="name" header="Name">
         <template #body="slotProps">
-            <a :href="slotProps.data.link" target="_blank" rel="noreferrer noopener">{{slotProps.data.name}}</a>
+            <a :href="slotProps.data.link" target="_blank" rel="noreferrer noopener">{{slotProps.data.tag ?? ''}} {{slotProps.data.name}}</a>
         </template>
       </column>
       <column field="price" header="Price">
