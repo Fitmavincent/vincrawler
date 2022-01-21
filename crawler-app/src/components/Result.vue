@@ -4,10 +4,10 @@
     <data-table :value="results" responsiveLayout="scroll">
       <template #header>
         <div class="table-header flex items-left">
-            Products
-            <Button icon="pi pi-refresh" />
+            Products            
         </div>
       </template>
+      <input-text type="text" placeholder="Search" v-model="search" v-debounce:500ms="searchResult" :debounce-events="['keyup', 'tab']"/>
       <column field="image">
         <template #body="slotProps">
           <img :src="slotProps.data.image" :alt="slotProps.data.image">
@@ -37,23 +37,43 @@ export default {
   data() {
     return {
       resultUrl: import.meta.env.VITE_OZB_CRAWLER_URL,
+      wishes: 'Nintendo, LEGO, Xiaomi',
       results: null,
+      search: null,
     };
   },
   created() {
     
   },
   mounted() {
-    this.getCrawlerResult();
+    this.getDefaultResult();
   },
   methods: {
-    getCrawlerResult() {
-      this.axios.get(this.resultUrl).then((res) => {
-        if(res.data){
+    getDefaultResult() {
+      const url = this.formatUrl(this.wishes);
+      this.axios.get(url).then((res) => {
+        if(res.data) {
           this.results = res.data.items;
         }
       });
+    },    
+    searchResult(searchText) {      
+      if(searchText && searchText != '') {        
+        const url = this.formatUrl(searchText);
+        this.axios.get(url).then((res) => {
+          if(res.data) {
+            this.results = res.data.items;
+          }
+        })
+      }
+      
+      if(searchText == '') {
+        this.getDefaultResult();
+      }
     },
+    formatUrl(searchText) {
+      return `${this.resultUrl}&crawl_args={"wishes":"${searchText}"}`
+    }
   },
 };
 </script>

@@ -9,17 +9,20 @@ base_url = "https://www.ozbargain.com.au"
 class OzbCrawler(CrawlSpider):
     name = "ozb"
     page = 10
-    wish_list = [
-        'Nintendo',
-        'LEGO',
-        'Xiaomi'
-    ]
+    wish_list = []
+    # wish_list = [
+    #     'Nintendo',
+    #     'LEGO',
+    #     'Xiaomi'
+    # ]
     
     def start_requests(self, *args):
         
         # OzbCrawler.wish_list = self.wishes
         if hasattr(self, 'wishes'):
-            OzbCrawler.wish_list = self.wishes.split(',')
+            print(self.wishes)
+            OzbCrawler.wish_list = [e.strip() for e in self.wishes.split(',')] # strip and split at the same time
+            print(OzbCrawler.wish_list)
         
         urls = [
             base_url
@@ -64,7 +67,7 @@ class OzbCrawler(CrawlSpider):
         item_time = item.xpath(TIME_SELECTOR).get()
         
         for wish_item in OzbCrawler.wish_list:
-            if(wish_item in item_name and expired_tag is None):
+            if(wish_item.lower() in item_name.lower() and expired_tag is None):
                 match_entry = OzbItem (tag = self.process_tag(expired_tag, upcoming_tag), name = item_name, price = item_price, link = f'{base_url}{item_link}', image = item_image, time = self.format_time(item_time))
                 return match_entry
 
