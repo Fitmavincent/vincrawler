@@ -1,0 +1,59 @@
+name: Deploy App to Netlify
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push: 
+    branches: [ master ]
+    paths: 
+      - 'crawler-app/**'
+      - '.github/workflows/app_deploy.yml'
+      - '!crawler/**'
+  pull_request: 
+    branches: [ master ]
+    paths: 
+      - 'crawler-app/**'
+      - '.github/workflows/app_deploy.yml'
+      - '!crawler/**'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build: 
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps: 
+      - name: Checkout crawler-app
+        uses: actions/checkout@v2
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        users: actions/setup-node@2
+        with: 
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - run: npm run build
+
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@1.2
+        with: 
+          publish-dir: './crawler-app/dist'
+          production-branch: master
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          deploy-message: "Deploy from Github actions"
+          enable-pull-request-comment: false
+          enable-commit-comment: true
+          overwrites-pull-request-comment: true
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 1
+
