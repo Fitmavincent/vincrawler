@@ -32,7 +32,7 @@ jobs:
 
           dockerfile_name: dockerfile
 
-          docker_options: "--no-cache -p 9080:9080"
+          docker_options: "--no-cache --port 9080:9080"
 
           process_type: web
 
