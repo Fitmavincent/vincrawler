@@ -2,6 +2,7 @@ import { createApp } from 'vue'
 
 import App from './App.vue'
 import './index.css'
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 import Axios from 'axios'
 
@@ -12,6 +13,8 @@ import Dialog from 'primevue/dialog'
 import DataTable from 'primevue/datatable'
 import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
+import ProgressSpinner from 'primevue/progressspinner';
+import Loading from 'vue-loading-overlay';
 
 const app = createApp(App)
 const components = import.meta.globEager('./components/*.vue')
@@ -31,9 +34,12 @@ app.use(vueDebounce, {
 app.use(PrimeVue)
 // Prime Vue components
 app.component('DataTable', DataTable)
-app.component('Column', Column);
-app.component('InputText', InputText);
+app.component('Column', Column)
+app.component('InputText', InputText)
 app.component('Dialog', Dialog)
+app.component('ProgressSpinner', ProgressSpinner)
+
+app.component('Loading', Loading);
 
 app.mount('#app')
 
