@@ -30,7 +30,7 @@ jobs:
 
           dockerfile_directory: ./
 
-          dockerfile_name: dockerfile
+          dockerfile_name: herokufile
 
           docker_options: "--no-cache"
 
