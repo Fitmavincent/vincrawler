@@ -1,0 +1,40 @@
+name: Deploy Crawler to Heroku
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push: 
+    branches: [ master ]
+  pull_request: 
+    branches: [ master ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  build: 
+    runs-on: ubuntu-latest    
+    steps: 
+      - name: Checkout crawler
+        uses: actions/checkout@v2
+
+      - name: Build, Push and Release a Docker container to Heroku
+        uses: gonuit/heroku-docker-deploy@v1.3.3
+        with: 
+          email: ${{ secrets.HEROKU_EMAIL }}
+
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+
+          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
+
+          dockerfile_directory: ./
+
+          dockerfile_name: dockerfile
+
+          docker_options: "-no-cache"
+
+          process_type: web
+
+
+
