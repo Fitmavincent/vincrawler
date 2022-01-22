@@ -11,6 +11,6 @@ RUN pip3 install scrapyrt
 
 COPY . .
 
-ENTRYPOINT ["scrapyrt", "-i", "0.0.0.0"]
+ENTRYPOINT ["scrapyrt", "-i", "0.0.0.0", "-p", "9080"]
 
 EXPOSE 9080
