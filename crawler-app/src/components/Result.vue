@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-3xl font-bold">Ozb Crawl Result</h1>  
+    <h1 class="text-3xl font-bold">Ozb Channel</h1>  
     <data-table :value="results" responsiveLayout="scroll">
       <template #header>
         <div class="table-header flex items-left">
