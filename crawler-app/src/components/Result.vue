@@ -65,7 +65,7 @@ export default {
       this.axios.get(url).then((res) => {
         if(res.data) {
           this.isLoading = false;
-          this.results = res.data.items;
+          this.results = this.sortByDate(res.data.items);
         }
       });
     },    
@@ -76,7 +76,7 @@ export default {
         this.axios.get(url).then((res) => {
           this.isLoading = false;
           if(res.data) {
-            this.results = res.data.items;
+            this.results = this.sortByDate(res.data.items);
           }
         })
       }
@@ -87,6 +87,9 @@ export default {
     },
     formatUrl(searchText) {
       return `${this.resultUrl}&crawl_args={"wishes":"${searchText}"}`
+    },
+    sortByDate(items) {
+      return items.sort((a, b) => new Date(b.time) - new Date(a.time));
     }
   },
 };
