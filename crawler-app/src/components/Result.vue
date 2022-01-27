@@ -89,7 +89,7 @@ export default {
       return `${this.resultUrl}&crawl_args={"wishes":"${searchText}"}`
     },
     sortByDate(items) {
-      return items.sort((a, b) => new Date(b.time) - new Date(a.time));
+      return items.sort((a, b) => Date.parse(b.time) - Date.parse(a.time));
     }
   },
 };
