@@ -62,22 +62,23 @@ export default {
     getDefaultResult() {
       this.isLoading = true;
       const url = this.formatUrl(this.wishes);
-      this.axios.get(url).then((res) => {
-        if(res.data) {
-          this.isLoading = false;
-          this.results = this.sortByDate(res.data.items);
-        }
+      this.axios.get(url).then((res) => {        
+        this.isLoading = false;
+
+        if(!res.data) return;
+        this.results = this.sortByDate(res.data.items);        
       });
     },    
     searchResult(searchText) {
       this.isLoading = true;  
+      
       if(searchText && searchText != '') {        
         const url = this.formatUrl(searchText);
         this.axios.get(url).then((res) => {
           this.isLoading = false;
-          if(res.data) {
-            this.results = this.sortByDate(res.data.items);
-          }
+
+          if(!res.data) return;
+          this.results = this.sortByDate(res.data.items);          
         })
       }
       
