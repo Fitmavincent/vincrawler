@@ -68,7 +68,15 @@ class OzbCrawler(CrawlSpider):
         
         for wish_item in OzbCrawler.wish_list:
             if(wish_item.lower() in item_name.lower() and expired_tag is None):
-                match_entry = OzbItem (tag = self.process_tag(expired_tag, upcoming_tag), name = item_name, price = item_price, link = f'{base_url}{item_link}', image = item_image, time = self.format_time(item_time))
+                match_entry = OzbItem (
+                    tag = self.process_tag(expired_tag, upcoming_tag), 
+                    name = item_name, 
+                    price = item_price, 
+                    link = f'{base_url}{item_link}', 
+                    node_url = self.process_node(base_url, item_link), 
+                    image = item_image, 
+                    time = self.format_time(item_time)
+                )
                 return match_entry
 
     def format_time(self, timeStr):
@@ -80,3 +88,7 @@ class OzbCrawler(CrawlSpider):
         for tag in tags:
             if(tag is not None):
                 return tag
+
+    def process_node(self, base_url, item_url):
+        node_url = item_url.replace('goto', 'node')
+        return f'{base_url}{node_url}'

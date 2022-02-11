@@ -15,5 +15,6 @@ class OzbItem(scrapy.Item):
     name = scrapy.Field()
     price = scrapy.Field()
     link = scrapy.Field()
+    node_url = scrapy.Field()
     image = scrapy.Field()
     time = scrapy.Field()

@@ -17,7 +17,9 @@
         <input-text type="text" placeholder="Search" v-model="search" v-debounce:500ms="searchResult" :debounce-events="['keyup', 'tab']"/>
         <column field="image" header="Image">
           <template #body="slotProps">
-            <img class="object-contain h-24 w-24" :src="slotProps.data.image" :alt="slotProps.data.image">
+            <a :href="slotProps.data.link" target="_blank" rel="noreferrer noopener">
+              <img class="object-contain h-24 w-24" :src="slotProps.data.image" :alt="slotProps.data.image">
+            </a>
           </template>
         </column>
         <column field="name" header="Name">
@@ -26,6 +28,9 @@
           </template>
         </column>
         <column field="price" header="Price">
+          <template #body="slotProps">
+              <a :href="slotProps.data.node_url" target="_blank" rel="noreferrer noopener">{{slotProps.data.price}}</a>
+          </template>
         </column>
         <!-- <column field="link" header="Link">
           <template #body="slotProps">
