@@ -50,7 +50,7 @@ export default {
   data() {
     return {
       resultUrl: import.meta.env.VITE_OZB_CRAWLER_URL,
-      wishes: 'Nintendo, LEGO, Xiaomi',
+      wishes: 'Nintendo, LEGO, Xiaomi, DJI',
       results: null,
       search: null,
       isLoading: false,
