@@ -7,11 +7,11 @@
     />
 
     <div>
-      <h1 class="text-3xl font-bold">Ozb Channel</h1>  
+      <h1 class="text-3xl font-bold">Ozb Channel</h1>
       <data-table :resizableColumns="false" columnResizeMode="expand" :value="results" responsiveLayout="scroll">
         <template #header>
           <div class="table-header flex items-left">
-              Products            
+              Products
           </div>
         </template>
         <input-text type="text" placeholder="Search" v-model="search" v-debounce:500ms="searchResult" :debounce-events="['keyup', 'tab']"/>
@@ -40,7 +40,7 @@
         <column field="time" header="Post time">
         </column>
       </data-table>
-    </div>   
+    </div>
   </div>
 </template>
 
@@ -50,7 +50,7 @@ export default {
   data() {
     return {
       resultUrl: import.meta.env.VITE_OZB_CRAWLER_URL,
-      wishes: 'Nintendo, LEGO, Xiaomi, DJI',
+      wishes: 'Nintendo, LEGO, Xiaomi, DJI, iPhone, Apple',
       results: null,
       search: null,
       isLoading: false,
@@ -58,7 +58,7 @@ export default {
     };
   },
   created() {
-    
+
   },
   mounted() {
     this.getDefaultResult();
@@ -67,26 +67,26 @@ export default {
     getDefaultResult() {
       this.isLoading = true;
       const url = this.formatUrl(this.wishes);
-      this.axios.get(url).then((res) => {        
+      this.axios.get(url).then((res) => {
         this.isLoading = false;
 
         if(!res.data) return;
-        this.results = this.sortByDate(res.data.items);        
+        this.results = this.sortByDate(res.data.items);
       });
-    },    
+    },
     searchResult(searchText) {
-      this.isLoading = true;  
-      
-      if(searchText && searchText != '') {        
+      this.isLoading = true;
+
+      if(searchText && searchText != '') {
         const url = this.formatUrl(searchText);
         this.axios.get(url).then((res) => {
           this.isLoading = false;
 
           if(!res.data) return;
-          this.results = this.sortByDate(res.data.items);          
+          this.results = this.sortByDate(res.data.items);
         })
       }
-      
+
       if(searchText == '') {
         this.getDefaultResult();
       }
