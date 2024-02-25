@@ -46,6 +46,8 @@
 
 
 <script>
+import qs from 'qs';
+
 export default {
   data() {
     return {
@@ -81,7 +83,8 @@ export default {
         this.axios.get(this.ozdataUrl, {
           params: {
             wish: searchText.split(' ')
-          }
+          },
+          paramsSerializer: params => qs.stringify(params, {arrayFormat: 'repeat'})
         }).then((res) => {
           this.isLoading = false;
 

@@ -11,12 +11,14 @@
     "dotenv": "^14.2.0",
     "primeicons": "^6.0.1",
     "primevue": "^3.49.0",
+    "qs": "^6.11.2",
     "vue": "^3.2.25",
     "vue-debounce": "^3.0.2",
     "vue-loading-overlay": "^5.0.3"
   },
   "devDependencies": {
     "@types/node": "^17.0.9",
+    "@types/qs": "^6.9.11",
     "@typescript-eslint/eslint-plugin": "^5.10.0",
     "@typescript-eslint/parser": "^5.10.0",
     "@vitejs/plugin-vue": "^2.0.0",
