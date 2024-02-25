@@ -111,4 +111,10 @@ input {
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+@media screen and (max-width: 768px) {
+  input {
+    width: 70%;
+  }
+}
 </style>
