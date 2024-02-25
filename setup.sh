@@ -7,18 +7,18 @@ START_VUE_APP='n'
 if [ $# -eq 0 ]
 then
     echo "Please add command"
-else    
+else
     for arg in "$@"
-    do        
+    do
         if [ "$arg" == '-up' ] || [ "$arg" == '-r' ]
         then
             START_CRAWLER='y'
-            echo "Start Web Crawler"        
+            echo "Start Web Crawler"
         elif [ "$arg" == '-down' ] || [ "$arg" == '-d' ]
         then
             END_CRAWLER='y'
             echo "End Web Crawler"
-        elif [ "$arg" == '-vue' ] || [ "$arg" == '-rf' ]
+        elif [ "$arg" == '-vue' ] || [ "$arg" == '-fe' ]
         then
             START_VUE_APP='y'
         fi
@@ -38,7 +38,7 @@ fi
 
 if [ $START_VUE_APP == 'y' ]
 then
-    cd crawler-app 
+    cd crawler-app
     npm install
     npm run dev
 fi

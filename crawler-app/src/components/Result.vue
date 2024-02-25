@@ -49,8 +49,8 @@
 export default {
   data() {
     return {
-      resultUrl: import.meta.env.VITE_OZB_CRAWLER_URL,
-      wishes: 'Nintendo, LEGO, Xiaomi, DJI, iPhone, Apple',
+      ozdataUrl: import.meta.env.VITE_OZB_CRAWLER_URL,
+      wishes: '',
       results: null,
       search: null,
       isLoading: false,
@@ -66,33 +66,33 @@ export default {
   methods: {
     getDefaultResult() {
       this.isLoading = true;
-      const url = this.formatUrl(this.wishes);
-      this.axios.get(url).then((res) => {
+
+      this.axios.get(this.ozdataUrl).then((res) => {
         this.isLoading = false;
 
         if(!res.data) return;
-        this.results = this.sortByDate(res.data.items);
+        this.results = this.sortByDate(res.data);
       });
     },
     searchResult(searchText) {
       this.isLoading = true;
 
       if(searchText && searchText != '') {
-        const url = this.formatUrl(searchText);
-        this.axios.get(url).then((res) => {
+        this.axios.get(this.ozdataUrl, {
+          params: {
+            wish: searchText
+          }
+        }).then((res) => {
           this.isLoading = false;
 
           if(!res.data) return;
-          this.results = this.sortByDate(res.data.items);
+          this.results = this.sortByDate(res.data);
         })
       }
 
       if(searchText == '') {
         this.getDefaultResult();
       }
-    },
-    formatUrl(searchText) {
-      return `${this.resultUrl}&crawl_args={"wishes":"${searchText}"}`
     },
     sortByDate(items) {
       return items.sort((a, b) => Date.parse(b.time) - Date.parse(a.time));
@@ -102,5 +102,13 @@ export default {
 </script>
 
 
-<style lang="">
+<style scoped>
+input {
+  padding: 10px;
+  margin: 10px 0;
+  width: 20%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 </style>
