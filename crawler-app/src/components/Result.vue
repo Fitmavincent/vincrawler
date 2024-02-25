@@ -80,7 +80,7 @@ export default {
       if(searchText && searchText != '') {
         this.axios.get(this.ozdataUrl, {
           params: {
-            wish: searchText
+            wish: searchText.split(' ')
           }
         }).then((res) => {
           this.isLoading = false;
