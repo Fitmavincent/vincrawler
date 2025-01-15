@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <TabView :activeIndex="activeTab" @tab-change="handleTabChange">
+  <div class="container mx-auto px-4 md:px-6 lg:px-8 max-w-7xl">
+    <TabView :activeIndex="activeTab" @tab-change="handleTabChange" class="mt-8">
       <TabPanel header="Ozbargain">
         <ozb-results ref="ozbResults" />
       </TabPanel>
@@ -48,5 +48,7 @@ export default {
 </script>
 
 <style scoped>
-
+:deep(.p-tabview-nav) {
+  justify-content: center;
+}
 </style>
