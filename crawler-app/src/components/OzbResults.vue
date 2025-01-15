@@ -9,11 +9,6 @@
     <div>
       <h1 class="text-3xl font-bold">Ozb Channel</h1>
       <data-table :resizableColumns="false" columnResizeMode="expand" :value="results" responsiveLayout="scroll" class="result-container table-container">
-        <template #header>
-          <div class="table-header">
-              Products
-          </div>
-        </template>
         <input-text type="text" placeholder="Search" v-model="search" v-debounce:500ms="searchResult" :debounce-events="['keyup', 'tab']"/>
         <column field="image" header="Image">
           <template #body="slotProps">

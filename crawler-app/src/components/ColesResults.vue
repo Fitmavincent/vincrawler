@@ -20,7 +20,11 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         <div v-for="product in filteredResults" :key="product.product_link"
-          class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+          class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow relative"
+          :class="{'border-l-4 border-b-4 border-red-500': product.retailer === 'Coles'}">
+          <div class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+            {{ product.discount }}
+          </div>
           <a :href="product.product_link" target="_blank" rel="noreferrer noopener">
             <img :src="product.image" :alt="product.name" class="w-full h-48 object-contain p-4">
             <div class="p-4">
@@ -64,7 +68,7 @@ export default {
     }
   },
   mounted() {
-    this.getDefaultResult();
+    // Remove the automatic data loading
   },
   methods: {
     getDefaultResult() {
@@ -79,6 +83,10 @@ export default {
     searchResult() {
       // Now just triggers the computed property to update
       this.results = this.filteredResults;
+    },
+    loadData() {
+      if (this.allResults) return; // Don't reload if we already have data
+      this.getDefaultResult();
     }
   },
 };
