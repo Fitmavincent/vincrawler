@@ -58,9 +58,7 @@ export default {
 
   },
   mounted() {
-    console.log("OzbResults Mounted");
-    console.log("Ozb Data URL: ", this.ozdataUrl);
-    this.getDefaultResult();
+    // Remove automatic data loading
   },
   methods: {
     getDefaultResult() {
@@ -96,6 +94,10 @@ export default {
     },
     sortByDate(items) {
       return items.sort((a, b) => Date.parse(b.time) - Date.parse(a.time));
+    },
+    loadData() {
+      if (this.results && !this.forceRefresh) return;
+      this.getDefaultResult();
     }
   },
 };

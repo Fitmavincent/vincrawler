@@ -85,7 +85,7 @@ export default {
       this.results = this.filteredResults;
     },
     loadData() {
-      if (this.allResults) return; // Don't reload if we already have data
+      if (this.allResults && !this.forceRefresh) return;
       this.getDefaultResult();
     }
   },
