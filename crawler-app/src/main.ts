@@ -15,6 +15,8 @@ import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
 import ProgressSpinner from 'primevue/progressspinner';
 import Loading from 'vue-loading-overlay';
+import TabView from 'primevue/tabview';
+import TabPanel from 'primevue/tabpanel';
 
 const app = createApp(App)
 const components = import.meta.globEager('./components/*.vue')
@@ -38,6 +40,8 @@ app.component('Column', Column)
 app.component('InputText', InputText)
 app.component('Dialog', Dialog)
 app.component('ProgressSpinner', ProgressSpinner)
+app.component('TabView', TabView)
+app.component('TabPanel', TabPanel)
 
 app.component('Loading', Loading);
 

@@ -1,0 +1,106 @@
+<template>
+  <div>
+    <loading v-model:active="isLoading"
+      :can-cancel="true"
+      :on-cancel="onCancel"
+      :is-full-page="fullPage"/>
+
+    <div class="container mx-auto px-4 md:px-6 lg:px-8">
+      <h1 class="text-3xl font-bold mb-4">Coles Channel</h1>
+      <div class="flex items-center justify-center mb-4 gap-4">
+        <input-text type="text"
+          placeholder="Search"
+          v-model="search"
+          @input="searchResult"
+          :debounce-events="['keyup', 'tab']"/>
+        <span v-if="filteredResults" class="text-gray-600">
+          Found: {{ filteredResults.length }} items
+        </span>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+        <div v-for="product in filteredResults" :key="product.product_link"
+          class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+          <a :href="product.product_link" target="_blank" rel="noreferrer noopener">
+            <img :src="product.image" :alt="product.name" class="w-full h-48 object-contain p-4">
+            <div class="p-4">
+              <h3 class="text-lg font-semibold">{{ product.name }}</h3>
+              <div class="mt-2">
+                <p class="text-2xl font-bold text-red-600">${{ product.price.toFixed(2) }}</p>
+                <p class="text-sm text-gray-500 line-through">Was ${{ product.price_was.toFixed(2) }}</p>
+                <p class="text-sm text-gray-600">{{ product.price_per_unit }}</p>
+              </div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import qs from 'qs';
+
+export default {
+  data() {
+    return {
+      colesDataUrl: import.meta.env.VITE_COLES_CRAWLER_URL,
+      allResults: null,
+      results: null,
+      search: null,
+      isLoading: false,
+      fullPage: true
+    };
+  },
+  computed: {
+    filteredResults() {
+      if (!this.search || !this.allResults) return this.allResults;
+
+      const searchTerms = this.search.toLowerCase().split(' ').filter(term => term);
+      return this.allResults.filter(product => {
+        const productName = product.name.toLowerCase();
+        return searchTerms.every(term => productName.includes(term));
+      });
+    }
+  },
+  mounted() {
+    this.getDefaultResult();
+  },
+  methods: {
+    getDefaultResult() {
+      this.isLoading = true;
+      this.axios.get(this.colesDataUrl).then((res) => {
+        this.isLoading = false;
+        if(!res.data?.data) return;
+        this.allResults = res.data.data;
+        this.results = this.allResults;
+      });
+    },
+    searchResult() {
+      // Now just triggers the computed property to update
+      this.results = this.filteredResults;
+    }
+  },
+};
+</script>
+
+<style scoped>
+input {
+  padding: 10px;
+  margin: 10px 0;
+  width: 20%;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+@media screen and (max-width: 768px) {
+  input {
+    width: 70%;
+  }
+}
+
+.container {
+  margin-top: 1rem;
+}
+</style>

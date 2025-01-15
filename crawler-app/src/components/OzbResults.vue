@@ -63,6 +63,8 @@ export default {
 
   },
   mounted() {
+    console.log("OzbResults Mounted");
+    console.log("Ozb Data URL: ", this.ozdataUrl);
     this.getDefaultResult();
   },
   methods: {

@@ -4,9 +4,8 @@ console.log("Home Mounted");
 
 <template>
   <div>
-    <result />
+    <results />
   </div>
-
 </template>
 
 <style scoped>
