@@ -8,9 +8,9 @@
 
     <div>
       <h1 class="text-3xl font-bold">Ozb Channel</h1>
-      <data-table :resizableColumns="false" columnResizeMode="expand" :value="results" responsiveLayout="scroll">
+      <data-table :resizableColumns="false" columnResizeMode="expand" :value="results" responsiveLayout="scroll" class="result-container table-container">
         <template #header>
-          <div class="table-header flex items-left">
+          <div class="table-header">
               Products
           </div>
         </template>
@@ -119,5 +119,15 @@ input {
   input {
     width: 70%;
   }
+}
+
+.result-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.table-container{
+  margin:2rem
 }
 </style>
