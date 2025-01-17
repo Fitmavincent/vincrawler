@@ -8,7 +8,7 @@
 
     <div>
       <h1 class="text-3xl font-bold">Ozb Channel</h1>
-      <data-table :resizableColumns="false" columnResizeMode="expand" :value="results" responsiveLayout="scroll" class="result-container table-container">
+      <data-table :resizableColumns="false" columnResizeMode="expand" :value="results" responsiveLayout="scroll" class="result-container">
         <input-text type="text" placeholder="Search" v-model="search" v-debounce:500ms="searchResult" :debounce-events="['keyup', 'tab']"/>
         <column field="image" header="Image">
           <template #body="slotProps">
@@ -108,25 +108,64 @@ export default {
 input {
   padding: 10px;
   margin: 10px 0;
-  width: 20%;
+  width: 100%;
+  max-width: 300px;
   box-sizing: border-box;
   border: 1px solid #ccc;
   border-radius: 4px;
-}
-
-@media screen and (max-width: 768px) {
-  input {
-    width: 70%;
-  }
 }
 
 .result-container {
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 100%;
+  overflow-x: auto;
 }
 
-.table-container{
-  margin:2rem
+:deep(.p-datatable) {
+  width: 100%;
+  min-width: 320px; /* Ensure minimum width for mobile */
+}
+
+:deep(.p-datatable-wrapper) {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+:deep(.p-datatable-tbody td) {
+  word-break: break-word; /* Prevent text from overflowing */
+  min-width: 80px; /* Minimum column width */
+}
+
+:deep(.p-datatable-tbody td:first-child) {
+  min-width: 100px; /* Minimum width for image column */
+  width: 100px; /* Fixed width for image column */
+}
+
+/* Adjust image size for mobile */
+:deep(.p-datatable-tbody td:first-child img) {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+@media screen and (max-width: 640px) {
+  h1 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  :deep(.p-column-title) {
+    font-size: 0.9rem;
+  }
+
+  :deep(.p-datatable-tbody) {
+    font-size: 0.9rem;
+  }
+
+  :deep(.p-datatable-tbody td) {
+    padding: 0.5rem; /* Reduce padding on mobile */
+  }
 }
 </style>

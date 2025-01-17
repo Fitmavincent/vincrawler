@@ -1,5 +1,5 @@
 <template>
-  <div class="container mx-auto px-4 md:px-6 lg:px-8 max-w-7xl">
+  <div class="container mx-auto">
     <TabView :activeIndex="activeTab" @tab-change="handleTabChange" class="mt-8">
       <TabPanel header="Ozbargain">
         <ozb-results ref="ozbResults" />
@@ -50,5 +50,23 @@ export default {
 <style scoped>
 :deep(.p-tabview-nav) {
   justify-content: center;
+}
+
+:deep(.p-tabview) {
+  padding: 0 1rem;
+}
+
+@media screen and (max-width: 640px) {
+  .container {
+    padding: 0;
+  }
+
+  :deep(.p-tabview-nav li) {
+    margin: 0 0.25rem;
+  }
+
+  :deep(.p-tabview-nav-link) {
+    padding: 0.5rem !important;
+  }
 }
 </style>
