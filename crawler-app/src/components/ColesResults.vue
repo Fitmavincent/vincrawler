@@ -2,7 +2,6 @@
   <div>
     <loading v-model:active="isLoading"
       :can-cancel="true"
-      :on-cancel="onCancel"
       :is-full-page="fullPage"/>
 
     <div class="container mx-auto px-4 md:px-6 lg:px-8">
@@ -46,6 +45,12 @@
 import qs from 'qs';
 
 export default {
+  props: {
+    isActive: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       colesDataUrl: import.meta.env.VITE_COLES_CRAWLER_URL,
@@ -55,6 +60,7 @@ export default {
       isLoading: false,
       fullPage: true,
       syncInProgress: false,
+      initialLoadDone: false
     };
   },
   computed: {
@@ -68,9 +74,19 @@ export default {
       });
     }
   },
+  watch: {
+    isActive: {
+      immediate: true,
+      handler(newVal) {
+        if (newVal && !this.initialLoadDone) {
+          this.loadData();
+          this.initialLoadDone = true;
+        }
+      }
+    }
+  },
   mounted() {
-    // Remove the automatic data loading\
-    this.loadData();
+    // Remove the automatic data loading
   },
   methods: {
     async getDefaultResult() {
@@ -123,6 +139,7 @@ export default {
       this.results = this.filteredResults;
     },
     loadData() {
+      if (!this.isActive) return;
       if (this.allResults && !this.forceRefresh) return;
       this.getDefaultResult();
     }

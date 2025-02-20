@@ -2,10 +2,10 @@
   <div class="container mx-auto">
     <TabView :activeIndex="activeTab" @tab-change="handleTabChange" class="mt-8">
       <TabPanel header="Ozbargain">
-        <ozb-results ref="ozbResults" />
+        <ozb-results ref="ozbResults" :isActive="activeTab === 0" />
       </TabPanel>
       <TabPanel header="Coles">
-        <coles-results ref="colesResults" />
+        <coles-results ref="colesResults" :isActive="activeTab === 1" />
       </TabPanel>
     </TabView>
   </div>

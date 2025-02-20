@@ -2,7 +2,6 @@
   <div>
     <loading v-model:active="isLoading"
       :can-cancel="true"
-      :on-cancel="onCancel"
       :is-full-page="fullPage"
     />
 
@@ -58,7 +57,7 @@ export default {
 
   },
   mounted() {
-    // Remove automatic data loading
+    this.loadData();
   },
   methods: {
     getDefaultResult() {
