@@ -53,7 +53,8 @@ export default {
       results: null,
       search: null,
       isLoading: false,
-      fullPage: true
+      fullPage: true,
+      syncInProgress: false,
     };
   },
   computed: {
@@ -68,18 +69,53 @@ export default {
     }
   },
   mounted() {
-    // Remove the automatic data loading
+    // Remove the automatic data loading\
+    this.loadData();
   },
   methods: {
-    getDefaultResult() {
+    async getDefaultResult() {
       this.isLoading = true;
-      this.axios.get(this.colesDataUrl).then((res) => {
-        this.isLoading = false;
-        if(!res.data?.data) return;
-        this.allResults = res.data.data;
+      try {
+        const res = await this.axios.get(this.colesDataUrl);
+        if (!res.data?.data || res.data.data.length === 0) {
+          // If no data, attempt force sync
+          await this.forceSyncData();
+          // Retry getting data after sync
+          const newRes = await this.axios.get(this.colesDataUrl);
+          this.allResults = newRes.data?.data || [];
+        } else {
+          this.allResults = res.data.data;
+        }
         this.results = this.allResults;
-      });
+      } catch (error) {
+        if (error.response?.status === 404) {
+          await this.forceSyncData();
+          await this.getDefaultResult();
+        } else {
+          console.error('Error fetching Coles data:', error);
+        }
+      } finally {
+        this.isLoading = false;
+      }
     },
+
+    async forceSyncData() {
+      if (this.syncInProgress) return;
+
+      this.syncInProgress = true;
+      try {
+        const syncRes = await this.axios.post(`${this.colesDataUrl}/sync`);
+        if (syncRes.status !== 200) {
+          throw new Error('Sync failed');
+        }
+      } catch (error) {
+        console.error('Error syncing Coles data:', error);
+        throw error;
+      } finally {
+        this.syncInProgress = false;
+      }
+    },
+
     searchResult() {
       // Now just triggers the computed property to update
       this.results = this.filteredResults;
