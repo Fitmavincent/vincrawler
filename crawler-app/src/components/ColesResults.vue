@@ -90,7 +90,9 @@ export default {
       } catch (error) {
         if (error.response?.status === 404) {
           await this.forceSyncData();
-          await this.getDefaultResult();
+          if (!this.syncInProgress) {
+            await this.getDefaultResult();
+          }
         } else {
           console.error('Error fetching Coles data:', error);
         }
