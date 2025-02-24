@@ -60,7 +60,7 @@ export default {
       isLoading: false,
       fullPage: true,
       syncInProgress: false,
-      initialLoadDone: false
+      dataLoaded: false  // Replace initialLoadDone with more descriptive name
     };
   },
   computed: {
@@ -75,13 +75,10 @@ export default {
     }
   },
   watch: {
-    isActive: {
-      immediate: true,
-      handler(newVal) {
-        if (newVal && !this.initialLoadDone) {
-          this.loadData();
-          this.initialLoadDone = true;
-        }
+    isActive(newVal) {
+      if (newVal && !this.dataLoaded) {
+        console.log('Loading Coles data');
+        this.loadData();
       }
     }
   },
@@ -90,25 +87,25 @@ export default {
   },
   methods: {
     async getDefaultResult() {
+      if (this.isLoading || this.syncInProgress) return;
+
       this.isLoading = true;
       try {
         const res = await this.axios.get(this.colesDataUrl);
         if (!res.data?.data || res.data.data.length === 0) {
-          // If no data, attempt force sync
           await this.forceSyncData();
-          // Retry getting data after sync
-          const newRes = await this.axios.get(this.colesDataUrl);
-          this.allResults = newRes.data?.data || [];
-        } else {
-          this.allResults = res.data.data;
+          // Always fetch data after sync completes
+          return this.getDefaultResult();
         }
+
+        this.allResults = res.data.data;
         this.results = this.allResults;
+        this.dataLoaded = true;
       } catch (error) {
         if (error.response?.status === 404) {
           await this.forceSyncData();
-          if (!this.syncInProgress) {
-            await this.getDefaultResult();
-          }
+          // Retry fetching data after 404 and sync
+          return this.getDefaultResult();
         } else {
           console.error('Error fetching Coles data:', error);
         }
@@ -140,7 +137,7 @@ export default {
     },
     loadData() {
       if (!this.isActive) return;
-      if (this.allResults && !this.forceRefresh) return;
+      if (this.dataLoaded && !this.forceRefresh) return;
       this.getDefaultResult();
     }
   },
