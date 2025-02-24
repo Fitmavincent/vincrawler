@@ -20,8 +20,8 @@
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
         <div v-for="product in filteredResults" :key="product.product_link"
           class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow relative"
-          :class="{'border-l-4 border-b-4 border-red-500': product.retailer === 'Coles'}">
-          <div class="absolute top-2 right-2 bg-red-500 text-white px-2 py-1 rounded-full text-xs font-bold">
+          :class="{'border-l-4 border-b-4 border-coles-red': product.retailer === 'Coles'}">
+          <div class="absolute top-2 right-2 bg-coles-red text-white px-2 py-1 rounded-full text-xs font-bold">
             {{ product.discount }}
           </div>
           <a :href="product.product_link" target="_blank" rel="noreferrer noopener">
@@ -29,7 +29,7 @@
             <div class="p-4">
               <h3 class="text-lg font-semibold">{{ product.name }}</h3>
               <div class="mt-2">
-                <p class="text-2xl font-bold text-red-600">${{ product.price.toFixed(2) }}</p>
+                <p class="text-2xl font-bold text-coles-red">${{ product.price.toFixed(2) }}</p>
                 <p class="text-sm text-gray-500 line-through">Was ${{ product.price_was.toFixed(2) }}</p>
                 <p class="text-sm text-gray-600">{{ product.price_per_unit }}</p>
               </div>
@@ -165,5 +165,18 @@ input {
 
 .container {
   margin-top: 1rem;
+}
+
+/* Add Coles brand color */
+:deep(.border-coles-red) {
+  border-color: #e01a22;
+}
+
+:deep(.bg-coles-red) {
+  background-color: #e01a22;
+}
+
+:deep(.text-coles-red) {
+  color: #e01a22;
 }
 </style>
