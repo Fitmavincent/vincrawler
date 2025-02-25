@@ -12,9 +12,12 @@
           v-model="search"
           @input="searchResult"
           :debounce-events="['keyup', 'tab']"/>
-        <span v-if="filteredResults" class="text-gray-600">
-          Found: {{ filteredResults.length }} items
-        </span>
+        <div v-if="filteredResults" class="text-gray-600 flex items-center gap-2">
+          <span>Found: {{ filteredResults.length }} items</span>
+          <span v-if="lastSyncTime" class="text-sm">
+            (Last sync: {{ formattedSyncTime }})
+          </span>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -60,7 +63,8 @@ export default {
       isLoading: false,
       fullPage: true,
       syncInProgress: false,
-      dataLoaded: false  // Replace initialLoadDone with more descriptive name
+      dataLoaded: false,  // Replace initialLoadDone with more descriptive name
+      lastSyncTime: null
     };
   },
   computed: {
@@ -72,6 +76,21 @@ export default {
         const productName = product.name.toLowerCase();
         return searchTerms.every(term => productName.includes(term));
       });
+    },
+    formattedSyncTime() {
+      if (!this.lastSyncTime) return '';
+      const date = new Date(this.lastSyncTime);
+
+      const pad = (num) => String(num).padStart(2, '0');
+
+      const year = date.getFullYear();
+      const month = pad(date.getMonth() + 1);
+      const day = pad(date.getDate());
+      const hours = pad(date.getHours());
+      const minutes = pad(date.getMinutes());
+      const seconds = pad(date.getSeconds());
+
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
   },
   watch: {
@@ -99,6 +118,7 @@ export default {
         }
 
         this.allResults = res.data.data;
+        this.lastSyncTime = res.data.synced_at; // Store the sync time
         this.results = this.allResults;
         this.dataLoaded = true;
       } catch (error) {
@@ -123,6 +143,8 @@ export default {
         if (syncRes.status !== 200) {
           throw new Error('Sync failed');
         }
+        // Add a small delay to allow backend sync to complete
+        await new Promise(resolve => setTimeout(resolve, 1000));
       } catch (error) {
         console.error('Error syncing Coles data:', error);
         throw error;
@@ -136,6 +158,7 @@ export default {
       this.results = this.filteredResults;
     },
     loadData() {
+      console.log(`${this.isActive}, ${this.dataLoaded}, ${this.forceRefresh}`);
       if (!this.isActive) return;
       if (this.dataLoaded && !this.forceRefresh) return;
       this.getDefaultResult();
