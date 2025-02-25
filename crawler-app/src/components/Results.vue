@@ -7,6 +7,9 @@
       <TabPanel header="Coles">
         <coles-results ref="colesResults" :isActive="activeTab === 1" />
       </TabPanel>
+      <TabPanel header="Woolies">
+        <woolies-results ref="wooliesResults" :isActive="activeTab === 2" />
+      </TabPanel>
     </TabView>
   </div>
 </template>
@@ -27,8 +30,10 @@ export default {
     this.$nextTick(() => {
       if (storedTab === 0) {
         this.$refs.ozbResults?.loadData();
-      } else {
+      } else if (storedTab === 1) {
         this.$refs.colesResults?.loadData();
+      } else {
+        this.$refs.wooliesResults?.loadData();
       }
     });
   },
@@ -39,8 +44,10 @@ export default {
 
       if (e.index === 0) {
         this.$refs.ozbResults?.loadData();
-      } else {
+      } else if (e.index === 1) {
         this.$refs.colesResults?.loadData();
+      } else {
+        this.$refs.wooliesResults?.loadData();
       }
     }
   }
