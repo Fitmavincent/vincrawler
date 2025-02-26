@@ -63,6 +63,15 @@ export default {
   padding: 0 1rem;
 }
 
+:deep(.p-tabview-nav li) {
+  width: auto;
+  margin: 0 1rem;
+}
+
+:deep(li.p-highlight .p-tabview-nav-link) {
+    background: #d9e0eb !important;
+}
+
 @media screen and (max-width: 640px) {
   .container {
     padding: 0;
