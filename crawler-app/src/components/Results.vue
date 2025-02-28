@@ -11,11 +11,17 @@
         <woolies-results ref="wooliesResults" :isActive="activeTab === 2" />
       </TabPanel>
     </TabView>
+    <BackToTop />
   </div>
 </template>
 
 <script>
+import BackToTop from './BackToTop.vue'
+
 export default {
+  components: {
+    BackToTop
+  },
   data() {
     return {
       activeTab: 0
