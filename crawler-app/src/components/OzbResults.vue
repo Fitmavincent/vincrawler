@@ -145,7 +145,6 @@ input {
 /* Adjust image size for mobile */
 :deep(.p-datatable-tbody td:first-child img) {
   max-width: 100%;
-  height: auto;
   object-fit: contain;
 }
 
