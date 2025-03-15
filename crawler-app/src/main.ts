@@ -3,6 +3,9 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import './index.css'
 import 'vue-loading-overlay/dist/vue-loading.css';
+import 'primevue/resources/themes/saga-blue/theme.css'
+import 'primevue/resources/primevue.min.css'
+import 'primeicons/primeicons.css'
 
 import Axios from 'axios'
 

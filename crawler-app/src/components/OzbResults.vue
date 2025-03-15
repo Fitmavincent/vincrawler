@@ -8,7 +8,12 @@
     <div>
       <h1 class="text-3xl font-bold">Ozb Channel</h1>
       <data-table :resizableColumns="false" columnResizeMode="expand" :value="results" responsiveLayout="scroll" class="result-container">
-        <input-text type="text" placeholder="Search" v-model="search" v-debounce:500ms="searchResult" :debounce-events="['keyup', 'tab']"/>
+        <SearchInput
+          v-model="search"
+          @search="searchResult"
+          @clear="getDefaultResult"
+          v-debounce:500ms
+        />
         <column field="image" header="Image">
           <template #body="slotProps">
             <a :href="slotProps.data.link" target="_blank" rel="noreferrer noopener">
@@ -104,16 +109,6 @@ export default {
 
 
 <style scoped>
-input {
-  padding: 10px;
-  margin: 10px 0;
-  width: 100%;
-  max-width: 300px;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
 .result-container {
   display: flex;
   flex-direction: column;

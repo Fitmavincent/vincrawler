@@ -7,17 +7,19 @@
     <div class="container mx-auto px-4 md:px-6 lg:px-8">
       <h1 class="text-3xl font-bold mb-4">Coles Channel</h1>
       <div class="flex items-center justify-center mb-4 gap-4">
-        <input-text type="text"
-          placeholder="Search"
+        <SearchInput
           v-model="search"
-          @input="searchResult"
-          :debounce-events="['keyup', 'tab']"/>
-        <div v-if="filteredResults" class="text-gray-600 flex items-center gap-2">
-          <span>Found: {{ filteredResults.length }} items</span>
-          <span v-if="lastSyncTime" class="text-sm">
-            (Last sync: {{ formattedSyncTime }})
-          </span>
-        </div>
+          @search="searchResult"
+          @clear="searchResult">
+          <template #after-input>
+            <div v-if="filteredResults" class="text-gray-600 flex items-center gap-2">
+              <span>Found: {{ filteredResults.length }} items</span>
+              <span v-if="lastSyncTime" class="text-sm">
+                (Last sync: {{ formattedSyncTime }})
+              </span>
+            </div>
+          </template>
+        </SearchInput>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
@@ -168,21 +170,6 @@ export default {
 </script>
 
 <style scoped>
-input {
-  padding: 10px;
-  margin: 10px 0;
-  width: 20%;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-@media screen and (max-width: 768px) {
-  input {
-    width: 70%;
-  }
-}
-
 .container {
   margin-top: 1rem;
 }
