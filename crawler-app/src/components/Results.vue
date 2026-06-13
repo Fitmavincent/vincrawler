@@ -122,15 +122,27 @@ export default {
 :deep(.p-tabview-nav li) {
   width: auto;
   margin: 0;
+  opacity: 1 !important;
+  filter: none !important;
 }
 
 :deep(.p-tabview-nav-link) {
   border: 1px solid #dbe3ef !important;
   border-radius: 999px !important;
   padding: 0.72rem 1rem !important;
-  color: #49545f !important;
-  background: #f8fafc !important;
+  color: #334155 !important;
+  background: #ffffff !important;
   font-weight: 800 !important;
+  opacity: 1 !important;
+  filter: none !important;
+  box-shadow: none;
+}
+
+:deep(.p-tabview-nav li:not(.p-highlight) .p-tabview-nav-link) {
+  border-color: #d7deea !important;
+  color: #334155 !important;
+  background: #ffffff !important;
+  opacity: 1 !important;
 }
 
 :deep(.p-tabview-panels) {
@@ -142,7 +154,9 @@ export default {
   border-color: var(--channel-accent) !important;
   color: #ffffff !important;
   background: var(--channel-accent) !important;
-  box-shadow: 0 10px 24px var(--channel-accent-border);
+  opacity: 1 !important;
+  filter: none !important;
+  box-shadow: 0 10px 22px rgba(15, 23, 42, 0.14);
 }
 
 @media screen and (max-width: 640px) {
@@ -169,7 +183,7 @@ export default {
   }
 
   :deep(li.p-highlight .p-tabview-nav-link) {
-    box-shadow: 0 6px 14px var(--channel-accent-border);
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.12);
   }
 }
 </style>

@@ -93,6 +93,8 @@ Tabs are compact pill buttons.
 
 - Mobile: smaller text and padding.
 - Active tab uses `var(--channel-accent)`.
+- All tab wrappers and links explicitly render at full opacity with no filters. Do not allow inactive retailer tabs to inherit disabled/faded PrimeVue states.
+- Active tabs use channel color for the fill/border and a neutral shadow. Avoid channel-colored shadows because they can make one retailer tab appear lighter or less opaque than another.
 - Mobile active tab shadow is intentionally lighter than desktop to prevent clipping.
 - Do not remove the extra bottom padding under `.p-tabview-nav`; it prevents the bottom crop bug.
 
