@@ -1,5 +1,5 @@
 <template>
-  <section class="results-panel">
+  <section class="results-panel" :class="panelClass">
     <div class="panel-header">
       <div>
         <p class="panel-kicker">Crawler workspace</p>
@@ -38,6 +38,12 @@ export default {
       activeTab: 0
     }
   },
+  computed: {
+    panelClass() {
+      const channelClasses = ['channel-ozb', 'channel-coles', 'channel-woolies'];
+      return channelClasses[this.activeTab] || 'channel-generic';
+    }
+  },
   mounted() {
     // Get stored tab index or default to 0
     const storedTab = parseInt(localStorage.getItem('activeTab') || '0');
@@ -73,12 +79,33 @@ export default {
 
 <style scoped>
 .results-panel {
+  --channel-accent: #f59e0b;
+  --channel-accent-soft: #fff7ed;
+  --channel-accent-border: rgba(245, 158, 11, 0.28);
   overflow: hidden;
   border: 1px solid rgba(148, 163, 184, 0.28);
   border-radius: 1rem;
   background: rgba(255, 255, 255, 0.92);
   box-shadow: 0 24px 80px rgba(15, 23, 42, 0.14);
   backdrop-filter: blur(18px);
+}
+
+.results-panel.channel-ozb {
+  --channel-accent: #f37021;
+  --channel-accent-soft: #fff3e8;
+  --channel-accent-border: rgba(243, 112, 33, 0.3);
+}
+
+.results-panel.channel-coles {
+  --channel-accent: #e01a22;
+  --channel-accent-soft: #fff1f2;
+  --channel-accent-border: rgba(224, 26, 34, 0.28);
+}
+
+.results-panel.channel-woolies {
+  --channel-accent: #178841;
+  --channel-accent-soft: #ecfdf5;
+  --channel-accent-border: rgba(23, 136, 65, 0.28);
 }
 
 .panel-header {
@@ -90,7 +117,7 @@ export default {
 }
 
 .panel-kicker {
-  color: #0f766e;
+  color: #b45309;
   font-size: 0.78rem;
   font-weight: 900;
   letter-spacing: 0.12em;
@@ -143,9 +170,10 @@ h2 {
 }
 
 :deep(li.p-highlight .p-tabview-nav-link) {
-  border-color: #0f766e !important;
+  border-color: var(--channel-accent) !important;
   color: #ffffff !important;
-  background: #0f766e !important;
+  background: var(--channel-accent) !important;
+  box-shadow: 0 10px 24px var(--channel-accent-border);
 }
 
 @media screen and (max-width: 640px) {

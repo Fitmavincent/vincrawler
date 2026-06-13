@@ -48,14 +48,14 @@
 .app-shell {
   min-height: 100vh;
   background:
-    radial-gradient(circle at top left, rgba(20, 184, 166, 0.14), transparent 30rem),
-    linear-gradient(180deg, #f7f8f5 0%, #edf5f1 42%, #fbfcfa 100%);
+    radial-gradient(circle at top left, rgba(245, 158, 11, 0.18), transparent 30rem),
+    linear-gradient(180deg, #faf8f3 0%, #f3efe6 42%, #fbfaf7 100%);
 }
 
 .hero {
   color: #f8fafc;
   background:
-    linear-gradient(135deg, rgba(20, 20, 22, 0.94), rgba(22, 58, 54, 0.88)),
+    linear-gradient(135deg, rgba(18, 18, 20, 0.95), rgba(57, 44, 27, 0.9)),
     url("https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=1800&q=80");
   background-size: cover;
   background-position: center;
@@ -107,7 +107,7 @@
   border: 1px solid rgba(255, 255, 255, 0.18);
   border-radius: 999px;
   padding: 0.55rem 0.85rem;
-  color: #ccfbf1;
+  color: #fde68a;
   background: rgba(20, 20, 22, 0.42);
   backdrop-filter: blur(14px);
   font-size: 0.875rem;
@@ -123,7 +123,7 @@
 
 .eyebrow {
   margin-bottom: 0.8rem;
-  color: #5eead4;
+  color: #fbbf24;
   font-size: 0.8rem;
   font-weight: 800;
   letter-spacing: 0.16em;
@@ -140,7 +140,7 @@ h1 {
 .hero-copy {
   max-width: 650px;
   margin-top: 1.2rem;
-  color: #d9e5df;
+  color: #e8e0d2;
   font-size: 1.05rem;
   line-height: 1.7;
 }
@@ -166,7 +166,7 @@ h1 {
 }
 
 .hero-metrics small {
-  color: #d9e5df;
+  color: #e8e0d2;
 }
 
 .workspace {

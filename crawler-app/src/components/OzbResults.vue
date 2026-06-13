@@ -157,11 +157,11 @@ export default {
   gap: 1rem;
   border-radius: 0.85rem;
   padding: 1.1rem 1.2rem;
-  background: linear-gradient(135deg, #ecfdf5, #ffffff 58%);
+  background: linear-gradient(135deg, #fff3e8, #ffffff 58%);
 }
 
 .channel-heading p {
-  color: #0f766e;
+  color: #c2410c;
   font-size: 0.78rem;
   font-weight: 900;
   letter-spacing: 0.12em;
@@ -178,7 +178,7 @@ h1 {
   border-radius: 999px;
   padding: 0.55rem 0.85rem;
   color: #ffffff;
-  background: #0f766e;
+  background: #f37021;
   font-weight: 900;
 }
 
@@ -256,7 +256,7 @@ h1 {
 }
 
 .deal-title:hover {
-  color: #0f766e;
+  color: #c2410c;
 }
 
 .deal-tag {
@@ -264,14 +264,14 @@ h1 {
   margin-right: 0.35rem;
   border-radius: 999px;
   padding: 0.2rem 0.45rem;
-  color: #0f766e;
-  background: #ccfbf1;
+  color: #c2410c;
+  background: #ffedd5;
   font-size: 0.74rem;
   font-weight: 900;
 }
 
 .deal-price {
-  color: #0f766e;
+  color: #c2410c;
   font-size: 1.02rem;
   font-weight: 950;
 }
