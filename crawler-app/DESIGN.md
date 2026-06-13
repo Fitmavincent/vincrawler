@@ -116,6 +116,7 @@ Coles and Woolworths product cards reuse the existing `.discount-ribbon` for dis
 - Tag formatting lives in `src/utils/discountTags.js`; keep channel components using that shared utility.
 - Discount ribbons sit inside `.product-badge-row` within the image frame. Keep the reserved top image padding so badges do not overlap product images or escape the card on mobile.
 - Supermarket channel headers should use solid white surfaces with a retailer-colored left rail. Avoid pale full-panel green/red washes because they can read as opacity mismatches beside the active tab.
+- The `Half price only` filter in Coles and Woolworths must use `isHalfPriceItem` from `src/utils/discountTags.js` so filtering and badge labels stay consistent.
 
 ### Loading
 

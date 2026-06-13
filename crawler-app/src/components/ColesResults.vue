@@ -36,6 +36,11 @@
             </div>
           </template>
         </SearchInput>
+        <label class="filter-toggle" :class="{ 'filter-toggle--active': halfPriceOnly }">
+          <input v-model="halfPriceOnly" type="checkbox">
+          <span class="filter-toggle-control" aria-hidden="true"></span>
+          <span>Half price only</span>
+        </label>
       </div>
 
       <div v-if="filteredResults && filteredResults.length" class="product-grid">
@@ -64,7 +69,7 @@
 
       <div v-else-if="!isLoading" class="empty-state">
         <i class="pi pi-search"></i>
-        <p>No Coles items match this search.</p>
+        <p>No Coles items match these filters.</p>
       </div>
     </div>
   </div>
@@ -72,7 +77,7 @@
 
 <script>
 import qs from 'qs';
-import { discountTagClass, discountTagLabel } from '../utils/discountTags';
+import { discountTagClass, discountTagLabel, isHalfPriceItem } from '../utils/discountTags';
 
 export default {
   props: {
@@ -87,6 +92,7 @@ export default {
       allResults: null,
       results: null,
       search: null,
+      halfPriceOnly: false,
       isLoading: false,
       fullPage: true,
       syncInProgress: false,
@@ -96,12 +102,14 @@ export default {
   },
   computed: {
     filteredResults() {
-      if (!this.search || !this.allResults) return this.allResults;
+      if (!this.allResults) return this.allResults;
 
-      const searchTerms = this.search.toLowerCase().split(' ').filter(term => term);
+      const searchTerms = this.search ? this.search.toLowerCase().split(' ').filter(term => term) : [];
       return this.allResults.filter(product => {
         const productName = product.name.toLowerCase();
-        return searchTerms.every(term => productName.includes(term));
+        const matchesSearch = searchTerms.every(term => productName.includes(term));
+        const matchesHalfPrice = !this.halfPriceOnly || isHalfPriceItem(product);
+        return matchesSearch && matchesHalfPrice;
       });
     },
     formattedSyncTime() {
@@ -134,6 +142,7 @@ export default {
   methods: {
     discountTagClass,
     discountTagLabel,
+    isHalfPriceItem,
     async getDefaultResult() {
       if (this.isLoading || this.syncInProgress) return;
 
@@ -239,7 +248,76 @@ h1 {
 }
 
 .search-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
   width: 100%;
+}
+
+.filter-toggle {
+  display: inline-flex;
+  width: fit-content;
+  max-width: 100%;
+  align-items: center;
+  gap: 0.55rem;
+  border: 1px solid #d7deea;
+  border-radius: 999px;
+  padding: 0.48rem 0.7rem 0.48rem 0.55rem;
+  color: #334155;
+  background: #ffffff;
+  font-size: 0.88rem;
+  font-weight: 850;
+  line-height: 1;
+  cursor: pointer;
+  user-select: none;
+}
+
+.filter-toggle input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.filter-toggle-control {
+  position: relative;
+  width: 2rem;
+  height: 1.1rem;
+  flex: 0 0 auto;
+  border-radius: 999px;
+  background: #cbd5e1;
+  transition: background-color 160ms ease;
+}
+
+.filter-toggle-control::after {
+  position: absolute;
+  top: 0.17rem;
+  left: 0.18rem;
+  width: 0.76rem;
+  height: 0.76rem;
+  border-radius: 999px;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.22);
+  content: '';
+  transition: transform 160ms ease;
+}
+
+.filter-toggle--active {
+  border-color: rgba(224, 26, 34, 0.34);
+  color: #9f1239;
+  background: #fff1f2;
+}
+
+.filter-toggle--active .filter-toggle-control {
+  background: #e01a22;
+}
+
+.filter-toggle--active .filter-toggle-control::after {
+  transform: translateX(0.88rem);
+}
+
+.filter-toggle:focus-within {
+  outline: 3px solid rgba(224, 26, 34, 0.18);
+  outline-offset: 2px;
 }
 
 .result-meta {

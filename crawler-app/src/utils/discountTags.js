@@ -28,6 +28,10 @@ export function discountTagClass(product) {
   return '';
 }
 
+export function isHalfPriceItem(product) {
+  return isHalfPriceDiscount(normalizedDiscountType(product), discountPercent(product));
+}
+
 export function normalizedDiscountType(product) {
   return String(product.discount_type || product.discountType || '')
     .trim()
