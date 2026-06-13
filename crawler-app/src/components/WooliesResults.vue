@@ -314,8 +314,10 @@ h1 {
 
 .product-image-frame {
   position: relative;
+  box-sizing: border-box;
   display: grid;
   height: 13rem;
+  overflow: hidden;
   place-items: center;
   padding: 3.1rem 1.25rem 1.25rem;
   background: #f8fafc;
@@ -333,8 +335,9 @@ h1 {
 }
 
 .product-image-frame img {
+  display: block;
   max-width: 100%;
-  max-height: 100%;
+  max-height: calc(13rem - 4.35rem);
   object-fit: contain;
 }
 
