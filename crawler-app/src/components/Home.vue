@@ -12,30 +12,6 @@
         </div>
       </nav>
 
-      <section class="hero-content">
-        <div>
-          <p class="eyebrow">Ozbargain, Coles, Woolworths</p>
-          <h1>Track fresh discounts from every channel.</h1>
-          <p class="hero-copy">
-            Search across the latest crawled deals with a cleaner workspace built for scanning prices,
-            product images, and sync status quickly.
-          </p>
-        </div>
-        <div class="hero-metrics" aria-label="Tracked channels">
-          <div>
-            <span>3</span>
-            <small>channels</small>
-          </div>
-          <div>
-            <span>24/7</span>
-            <small>crawler feed</small>
-          </div>
-          <div>
-            <span>AU</span>
-            <small>retail focus</small>
-          </div>
-        </div>
-      </section>
     </header>
 
     <main class="workspace">
@@ -59,11 +35,10 @@
     url("https://images.unsplash.com/photo-1557821552-17105176677c?auto=format&fit=crop&w=1800&q=80");
   background-size: cover;
   background-position: center;
-  padding: 1.25rem clamp(1rem, 4vw, 4rem) 6rem;
+  padding: 1rem clamp(1rem, 4vw, 4rem) 2.5rem;
 }
 
-.topbar,
-.hero-content {
+.topbar {
   max-width: 1200px;
   margin: 0 auto;
 }
@@ -76,9 +51,7 @@
 }
 
 .brand-lockup,
-.status-pill,
-.hero-metrics,
-.hero-metrics div {
+.status-pill {
   display: flex;
   align-items: center;
 }
@@ -113,80 +86,15 @@
   font-size: 0.875rem;
 }
 
-.hero-content {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 2rem;
-  align-items: end;
-  padding-top: 4.5rem;
-}
-
-.eyebrow {
-  margin-bottom: 0.8rem;
-  color: #fbbf24;
-  font-size: 0.8rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-h1 {
-  max-width: 760px;
-  font-size: clamp(2.25rem, 6vw, 5.2rem);
-  line-height: 0.95;
-  font-weight: 900;
-}
-
-.hero-copy {
-  max-width: 650px;
-  margin-top: 1.2rem;
-  color: #e8e0d2;
-  font-size: 1.05rem;
-  line-height: 1.7;
-}
-
-.hero-metrics {
-  gap: 0.75rem;
-}
-
-.hero-metrics div {
-  min-width: 6.5rem;
-  flex-direction: column;
-  align-items: flex-start;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 0.75rem;
-  padding: 0.9rem 1rem;
-  background: rgba(20, 20, 22, 0.48);
-  backdrop-filter: blur(14px);
-}
-
-.hero-metrics span {
-  font-size: 1.35rem;
-  font-weight: 900;
-}
-
-.hero-metrics small {
-  color: #e8e0d2;
-}
-
 .workspace {
   max-width: 1240px;
-  margin: -3.75rem auto 0;
-  padding: 0 clamp(0.85rem, 3vw, 2rem) 4rem;
+  margin: -1.6rem auto 0;
+  padding: 0 clamp(0.85rem, 3vw, 2rem) 3rem;
 }
 
 @media screen and (max-width: 860px) {
   .hero {
-    padding-bottom: 5rem;
-  }
-
-  .hero-content {
-    grid-template-columns: 1fr;
-    padding-top: 3.25rem;
-  }
-
-  .hero-metrics {
-    flex-wrap: wrap;
+    padding-bottom: 2.45rem;
   }
 }
 
@@ -200,9 +108,8 @@ h1 {
     padding-right: 1rem;
   }
 
-  .hero-metrics div {
-    min-width: 0;
-    flex: 1;
+  .workspace {
+    margin-top: -1.5rem;
   }
 }
 </style>

@@ -1,12 +1,5 @@
 <template>
   <section class="results-panel" :class="panelClass">
-    <div class="panel-header">
-      <div>
-        <p class="panel-kicker">Crawler workspace</p>
-        <h2>Deal channels</h2>
-      </div>
-    </div>
-
     <TabView :activeIndex="activeTab" @tab-change="handleTabChange" class="channel-tabs">
       <TabPanel header="Ozbargain">
         <ozb-results ref="ozbResults" :isActive="activeTab === 0" />
@@ -104,33 +97,11 @@ export default {
   --channel-accent-border: rgba(23, 136, 65, 0.28);
 }
 
-.panel-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 1.4rem 1.5rem 0.75rem;
-}
-
-.panel-kicker {
-  color: #b45309;
-  font-size: 0.78rem;
-  font-weight: 900;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-}
-
-h2 {
-  color: #0f172a;
-  font-size: 1.65rem;
-  font-weight: 900;
-}
-
 :deep(.p-tabview-nav) {
   justify-content: flex-start;
   border: 0;
   gap: 0.5rem;
-  padding: 0 1.5rem 0.7rem;
+  padding: 1rem 1.5rem 0.7rem;
   background: transparent;
 }
 
@@ -175,16 +146,10 @@ h2 {
 }
 
 @media screen and (max-width: 640px) {
-  .panel-header {
-    align-items: flex-start;
-    flex-direction: column;
-    padding: 1rem 1rem 0.65rem;
-  }
-
   :deep(.p-tabview-nav) {
     gap: 0.4rem;
     overflow: visible;
-    padding: 0 0.75rem 0.85rem;
+    padding: 0.85rem 0.75rem 0.85rem;
   }
 
   :deep(.p-tabview-nav-container) {
