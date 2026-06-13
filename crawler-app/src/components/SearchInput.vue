@@ -1,5 +1,6 @@
 <template>
   <div class="search-wrapper">
+    <i class="pi pi-search search-icon"></i>
     <span class="p-input-icon-right">
       <i v-if="searchValue" class="pi pi-times clear-icon" @click="clearSearch"></i>
       <input-text
@@ -55,13 +56,16 @@ export default {
 </script>
 
 <style scoped>
-input {
-  padding: 10px;
-  margin: 10px 0;
-  width: 20%;
-  box-sizing: border-box;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+.search-wrapper {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 1rem;
+  border: 1px solid #dbe3ef;
+  border-radius: 0.85rem;
+  padding: 0.35rem 0.85rem;
+  background: #ffffff;
+  box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
 }
 
 .search-container {
@@ -73,7 +77,13 @@ input {
 
 .p-input-icon-right {
   position: relative;
-  display: inline-block;
+  display: block;
+  flex: 1;
+}
+
+.search-icon {
+  color: #64748b;
+  font-size: 1rem;
 }
 
 .p-input-icon-right i {
@@ -85,21 +95,36 @@ input {
 }
 
 .search-input {
-  width: 300px;
+  width: 100%;
+  border: 0;
+  padding: 0.8rem 2.25rem 0.8rem 0;
+  color: #0f172a;
+  font-size: 0.98rem;
+  box-shadow: none;
+}
+
+.search-input:focus {
+  box-shadow: none;
 }
 
 .clear-icon {
   cursor: pointer;
-  color: #666;
+  color: #64748b;
 }
 
 .clear-icon:hover {
-  color: #333;
+  color: #0f172a;
 }
 
 @media screen and (max-width: 768px) {
-  .search-input {
-    width: 100%;
+  .search-wrapper {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.25rem;
+  }
+
+  .search-icon {
+    display: none;
   }
 }
 </style>

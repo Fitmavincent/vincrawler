@@ -20,6 +20,7 @@ import ProgressSpinner from 'primevue/progressspinner';
 import Loading from 'vue-loading-overlay';
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
+import Button from 'primevue/button';
 
 const app = createApp(App)
 const components = import.meta.globEager('./components/*.vue')
@@ -45,9 +46,9 @@ app.component('Dialog', Dialog)
 app.component('ProgressSpinner', ProgressSpinner)
 app.component('TabView', TabView)
 app.component('TabPanel', TabPanel)
+app.component('Button', Button)
 
 app.component('Loading', Loading);
 
 app.mount('#app')
-
 

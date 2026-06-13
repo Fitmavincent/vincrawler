@@ -4,43 +4,53 @@
       :can-cancel="true"
       :is-full-page="fullPage"/>
 
-    <div class="container mx-auto px-4 md:px-6 lg:px-8">
-      <h1 class="text-3xl font-bold mb-4">Coles Channel</h1>
-      <div class="flex items-center justify-center mb-4 gap-4">
+    <div class="channel-view">
+      <div class="channel-heading coles-heading">
+        <div>
+          <p>Supermarket crawler</p>
+          <h1>Coles deals</h1>
+        </div>
+        <span class="channel-badge">Coles</span>
+      </div>
+
+      <div class="search-row">
         <SearchInput
           v-model="search"
+          placeholder="Search Coles specials"
           @search="searchResult"
           @clear="searchResult">
           <template #after-input>
-            <div v-if="filteredResults" class="text-gray-600 flex items-center gap-2">
-              <span>Found: {{ filteredResults.length }} items</span>
-              <span v-if="lastSyncTime" class="text-sm">
-                (Last sync: {{ formattedSyncTime }})
-              </span>
+            <div v-if="filteredResults" class="result-meta">
+              <span>{{ filteredResults.length }} items</span>
+              <span v-if="lastSyncTime">Synced {{ formattedSyncTime }}</span>
             </div>
           </template>
         </SearchInput>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+      <div v-if="filteredResults && filteredResults.length" class="product-grid">
         <div v-for="product in filteredResults" :key="product.product_link"
-          class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow relative"
-          :class="{'border-l-4 border-b-4 border-coles-red': product.retailer === 'Coles'}">
-          <div class="absolute top-2 right-2 bg-coles-red text-white px-2 py-1 rounded-full text-xs font-bold">
-            {{ product.discount }}
-          </div>
-          <a :href="product.product_link" target="_blank" rel="noreferrer noopener">
-            <img :src="product.image" :alt="product.name" class="w-full h-48 object-contain p-4">
-            <div class="p-4">
-              <h3 class="text-lg font-semibold">{{ product.name }}</h3>
-              <div class="mt-2">
-                <p class="text-2xl font-bold text-coles-red">${{ product.price.toFixed(2) }}</p>
-                <p class="text-sm text-gray-500 line-through">Was ${{ product.price_was.toFixed(2) }}</p>
-                <p class="text-sm text-gray-600">{{ product.price_per_unit }}</p>
+          class="product-card coles-card">
+          <a :href="product.product_link" target="_blank" rel="noreferrer noopener" class="product-link">
+            <div class="discount-ribbon">{{ product.discount }}</div>
+            <div class="product-image-frame">
+              <img :src="product.image" :alt="product.name">
+            </div>
+            <div class="product-body">
+              <h3>{{ product.name }}</h3>
+              <div class="price-row">
+                <p class="sale-price">${{ product.price.toFixed(2) }}</p>
+                <p class="was-price">Was ${{ product.price_was.toFixed(2) }}</p>
               </div>
+              <p class="unit-price">{{ product.price_per_unit }}</p>
             </div>
           </a>
         </div>
+      </div>
+
+      <div v-else-if="!isLoading" class="empty-state">
+        <i class="pi pi-search"></i>
+        <p>No Coles items match this search.</p>
       </div>
     </div>
   </div>
@@ -170,20 +180,181 @@ export default {
 </script>
 
 <style scoped>
-.container {
-  margin-top: 1rem;
+.channel-view {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-/* Add Coles brand color */
-:deep(.border-coles-red) {
-  border-color: #e01a22;
+.channel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  border-radius: 0.85rem;
+  padding: 1.1rem 1.2rem;
+  background: linear-gradient(135deg, #fff1f2, #ffffff 58%);
 }
 
-:deep(.bg-coles-red) {
-  background-color: #e01a22;
+.channel-heading p {
+  color: #9f1239;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-:deep(.text-coles-red) {
+h1 {
+  color: #111827;
+  font-size: 1.75rem;
+  font-weight: 900;
+}
+
+.channel-badge {
+  border-radius: 999px;
+  padding: 0.55rem 0.85rem;
+  color: #ffffff;
+  background: #e01a22;
+  font-weight: 900;
+}
+
+.search-row {
+  width: 100%;
+}
+
+.result-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  color: #64748b;
+  font-size: 0.86rem;
+  white-space: nowrap;
+}
+
+.result-meta span:first-child {
+  color: #0f172a;
+  font-weight: 800;
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 1rem;
+}
+
+.product-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.85rem;
+  background: #ffffff;
+  box-shadow: 0 16px 38px rgba(15, 23, 42, 0.08);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.product-card:hover {
+  border-color: rgba(224, 26, 34, 0.45);
+  transform: translateY(-3px);
+  box-shadow: 0 24px 48px rgba(15, 23, 42, 0.14);
+}
+
+.product-link {
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+}
+
+.discount-ribbon {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 1;
+  max-width: 8rem;
+  border-radius: 999px;
+  padding: 0.4rem 0.65rem;
+  color: #ffffff;
+  background: #e01a22;
+  font-size: 0.76rem;
+  font-weight: 900;
+}
+
+.product-image-frame {
+  display: grid;
+  height: 13rem;
+  place-items: center;
+  padding: 1.25rem;
+  background: #f8fafc;
+}
+
+.product-image-frame img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.product-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1rem;
+}
+
+h3 {
+  color: #0f172a;
+  font-size: 0.98rem;
+  font-weight: 850;
+  line-height: 1.35;
+}
+
+.price-row {
+  margin-top: auto;
+}
+
+.sale-price {
   color: #e01a22;
+  font-size: 1.85rem;
+  font-weight: 950;
+  line-height: 1;
+}
+
+.was-price {
+  margin-top: 0.25rem;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  text-decoration: line-through;
+}
+
+.unit-price {
+  color: #64748b;
+  font-size: 0.88rem;
+}
+
+.empty-state {
+  display: grid;
+  min-height: 16rem;
+  place-items: center;
+  border: 1px dashed #cbd5e1;
+  border-radius: 0.85rem;
+  color: #64748b;
+  background: #f8fafc;
+  text-align: center;
+}
+
+.empty-state i {
+  color: #94a3b8;
+  font-size: 1.5rem;
+}
+
+@media screen and (max-width: 768px) {
+  .channel-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .result-meta {
+    white-space: normal;
+  }
 }
 </style>
