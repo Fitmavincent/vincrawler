@@ -18,8 +18,8 @@
         <woolies-results ref="wooliesResults" :isActive="activeTab === 2" />
       </TabPanel>
     </TabView>
-    <BackToTop />
   </section>
+  <BackToTop />
 </template>
 
 <script>
