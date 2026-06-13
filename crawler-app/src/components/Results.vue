@@ -130,8 +130,18 @@ h2 {
   justify-content: flex-start;
   border: 0;
   gap: 0.5rem;
-  padding: 0 1.5rem;
+  padding: 0 1.5rem 0.7rem;
   background: transparent;
+}
+
+:deep(.p-tabview-nav-container) {
+  overflow-x: auto;
+  overflow-y: visible;
+  scrollbar-width: none;
+}
+
+:deep(.p-tabview-nav-container::-webkit-scrollbar) {
+  display: none;
 }
 
 :deep(.p-tabview) {
@@ -173,13 +183,13 @@ h2 {
 
   :deep(.p-tabview-nav) {
     gap: 0.4rem;
-    overflow-x: auto;
-    padding: 0 0.75rem 0.35rem;
-    scrollbar-width: none;
+    overflow: visible;
+    padding: 0 0.75rem 0.85rem;
   }
 
-  :deep(.p-tabview-nav::-webkit-scrollbar) {
-    display: none;
+  :deep(.p-tabview-nav-container) {
+    overflow-x: auto;
+    overflow-y: visible;
   }
 
   :deep(.p-tabview-nav-link) {
@@ -190,7 +200,11 @@ h2 {
   }
 
   :deep(.p-tabview-panels) {
-    padding: 1rem;
+    padding: 0.6rem 1rem 1rem;
+  }
+
+  :deep(li.p-highlight .p-tabview-nav-link) {
+    box-shadow: 0 6px 14px var(--channel-accent-border);
   }
 }
 </style>
