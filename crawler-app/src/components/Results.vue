@@ -5,10 +5,6 @@
         <p class="panel-kicker">Crawler workspace</p>
         <h2>Deal channels</h2>
       </div>
-      <div class="panel-note">
-        <i class="pi pi-refresh"></i>
-        Pulls live data from the existing APIs
-      </div>
     </div>
 
     <TabView :activeIndex="activeTab" @tab-change="handleTabChange" class="channel-tabs">
@@ -130,14 +126,6 @@ h2 {
   font-weight: 900;
 }
 
-.panel-note {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #475569;
-  font-size: 0.9rem;
-}
-
 :deep(.p-tabview-nav) {
   justify-content: flex-start;
   border: 0;
@@ -180,15 +168,24 @@ h2 {
   .panel-header {
     align-items: flex-start;
     flex-direction: column;
-    padding: 1rem 1rem 0.5rem;
+    padding: 1rem 1rem 0.65rem;
   }
 
   :deep(.p-tabview-nav) {
+    gap: 0.4rem;
     overflow-x: auto;
-    padding: 0 1rem;
+    padding: 0 0.75rem 0.35rem;
+    scrollbar-width: none;
+  }
+
+  :deep(.p-tabview-nav::-webkit-scrollbar) {
+    display: none;
   }
 
   :deep(.p-tabview-nav-link) {
+    min-width: max-content;
+    padding: 0.58rem 0.78rem !important;
+    font-size: 0.86rem;
     white-space: nowrap;
   }
 
