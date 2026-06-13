@@ -1,8 +1,18 @@
 <template>
   <div>
-    <loading v-model:active="isLoading"
+    <loading
+      v-model:active="isLoading"
       :can-cancel="true"
-      :is-full-page="fullPage"/>
+      :is-full-page="fullPage"
+      background-color="#f7f8f5"
+      :opacity="0.86"
+      blur="6px"
+    >
+      <div class="vc-loading-card" role="status" aria-live="polite">
+        <span class="vc-loading-ring" aria-hidden="true"></span>
+        <span>Loading deals</span>
+      </div>
+    </loading>
 
     <div class="channel-view">
       <div class="channel-heading">
