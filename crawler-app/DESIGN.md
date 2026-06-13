@@ -106,6 +106,17 @@ Search is a full-width control inside each active channel.
 - It uses the shared `SearchInput.vue`.
 - Avoid adding explanatory text around it.
 
+### Discount Tags
+
+Coles and Woolworths product cards reuse the existing `.discount-ribbon` for discount type signals.
+
+- Normal discounts keep showing the API-provided `product.discount` text.
+- Half-price items render as `Half price` with the shared amber highlight.
+- Higher-than-half discounts render as a calculated percentage, for example `60% off`.
+- Tag formatting lives in `src/utils/discountTags.js`; keep channel components using that shared utility.
+- Discount ribbons sit inside `.product-badge-row` within the image frame. Keep the reserved top image padding so badges do not overlap product images or escape the card on mobile.
+- Supermarket channel headers should use solid white surfaces with a retailer-colored left rail. Avoid pale full-panel green/red washes because they can read as opacity mismatches beside the active tab.
+
 ### Loading
 
 The loading overlay uses a custom CSS spinner instead of relying on the default `vue-loading-overlay` SVG animation.

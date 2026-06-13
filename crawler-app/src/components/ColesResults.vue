@@ -42,8 +42,12 @@
         <div v-for="product in filteredResults" :key="product.product_link"
           class="product-card coles-card">
           <a :href="product.product_link" target="_blank" rel="noreferrer noopener" class="product-link">
-            <div class="discount-ribbon">{{ product.discount }}</div>
             <div class="product-image-frame">
+              <div class="product-badge-row">
+                <span v-if="discountTagLabel(product)" class="discount-ribbon" :class="discountTagClass(product)">
+                  {{ discountTagLabel(product) }}
+                </span>
+              </div>
               <img :src="product.image" :alt="product.name">
             </div>
             <div class="product-body">
@@ -68,6 +72,7 @@
 
 <script>
 import qs from 'qs';
+import { discountTagClass, discountTagLabel } from '../utils/discountTags';
 
 export default {
   props: {
@@ -127,6 +132,8 @@ export default {
     // Remove the automatic data loading
   },
   methods: {
+    discountTagClass,
+    discountTagLabel,
     async getDefaultResult() {
       if (this.isLoading || this.syncInProgress) return;
 
@@ -201,9 +208,12 @@ export default {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  border: 1px solid rgba(224, 26, 34, 0.16);
+  border-left: 0.35rem solid #e01a22;
   border-radius: 0.85rem;
   padding: 1.1rem 1.2rem;
-  background: linear-gradient(135deg, #fff1f2, #ffffff 58%);
+  background: #ffffff;
+  box-shadow: 0 12px 28px rgba(15, 23, 42, 0.06);
 }
 
 .channel-heading p {
@@ -249,12 +259,13 @@ h1 {
 
 .product-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr));
   gap: 1rem;
 }
 
 .product-card {
   position: relative;
+  min-width: 0;
   overflow: hidden;
   border: 1px solid #e2e8f0;
   border-radius: 0.85rem;
@@ -271,30 +282,57 @@ h1 {
 
 .product-link {
   display: flex;
+  min-width: 0;
   height: 100%;
   flex-direction: column;
 }
 
 .discount-ribbon {
-  position: absolute;
-  top: 0.75rem;
-  right: 0.75rem;
-  z-index: 1;
-  max-width: 8rem;
+  display: inline-flex;
+  max-width: 100%;
+  min-height: 1.6rem;
+  align-items: center;
   border-radius: 999px;
   padding: 0.4rem 0.65rem;
   color: #ffffff;
   background: #e01a22;
   font-size: 0.76rem;
   font-weight: 900;
+  line-height: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.discount-ribbon--half {
+  color: #111827;
+  background: #fbbf24;
+  box-shadow: 0 10px 24px rgba(251, 191, 36, 0.28);
+}
+
+.discount-ribbon--higher {
+  background: #7c2d12;
+  box-shadow: 0 10px 24px rgba(124, 45, 18, 0.24);
 }
 
 .product-image-frame {
+  position: relative;
   display: grid;
   height: 13rem;
   place-items: center;
-  padding: 1.25rem;
+  padding: 3.1rem 1.25rem 1.25rem;
   background: #f8fafc;
+}
+
+.product-badge-row {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  left: 0.75rem;
+  z-index: 1;
+  display: flex;
+  justify-content: flex-end;
+  pointer-events: none;
 }
 
 .product-image-frame img {
@@ -305,6 +343,7 @@ h1 {
 
 .product-body {
   display: flex;
+  min-width: 0;
   flex: 1;
   flex-direction: column;
   gap: 0.75rem;
@@ -316,6 +355,7 @@ h3 {
   font-size: 0.98rem;
   font-weight: 850;
   line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .price-row {
