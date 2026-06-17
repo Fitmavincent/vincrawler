@@ -70,6 +70,7 @@ function isHalfPriceDiscount(discountType, percent) {
 function isHigherDiscount(discountType, percent) {
   return discountType.includes('higher') ||
     discountType.includes('greater') ||
+    discountType.includes('beyond_half') ||
     discountType.includes('more_than_half') ||
     discountType.includes('over_half') ||
     (Number.isFinite(percent) && percent > 50);

@@ -46,6 +46,8 @@ Channel accent variables are defined in `Results.vue`:
 - OzBargain: `#f37021`
 - Coles: `#e01a22`
 - Woolworths: `#178841`
+- Chemist Warehouse: `#1d4ed8`
+- Priceline: `#d81b60`
 
 Each new channel should add a new class in `Results.vue`, for example:
 
@@ -74,8 +76,11 @@ Avoid applying a retailer color to the whole app shell. The shell must remain ne
 Current channel files:
 
 - OzBargain: `src/components/OzbResults.vue`, orange-led.
-- Coles: `src/components/ColesResults.vue`, red-led.
-- Woolworths: `src/components/WooliesResults.vue`, green-led.
+- Shared product-card renderer: `src/components/RetailerResults.vue`.
+- Coles: `src/components/ColesResults.vue`, red-led wrapper.
+- Woolworths: `src/components/WooliesResults.vue`, green-led wrapper.
+- Chemist Warehouse: `src/components/ChemistWarehouseResults.vue`, blue-led wrapper.
+- Priceline: `src/components/PricelineResults.vue`, pink-led wrapper.
 
 ## Components And Styling
 
@@ -108,7 +113,7 @@ Search is a full-width control inside each active channel.
 
 ### Discount Tags
 
-Coles and Woolworths product cards reuse the existing `.discount-ribbon` for discount type signals.
+Coles, Woolworths, Chemist Warehouse, and Priceline product cards reuse the existing `.discount-ribbon` for discount type signals.
 
 - Normal discounts keep showing the API-provided `product.discount` text.
 - Half-price items render as `Half price` with the shared amber highlight.
@@ -116,7 +121,8 @@ Coles and Woolworths product cards reuse the existing `.discount-ribbon` for dis
 - Tag formatting lives in `src/utils/discountTags.js`; keep channel components using that shared utility.
 - Discount ribbons sit inside `.product-badge-row` within the image frame. Keep the reserved top image padding so badges do not overlap product images or escape the card on mobile.
 - Supermarket channel headers should use solid white surfaces with a retailer-colored left rail. Avoid pale full-panel green/red washes because they can read as opacity mismatches beside the active tab.
-- The `Half price only` filter in Coles and Woolworths must use `isHalfPriceItem` from `src/utils/discountTags.js` so filtering and badge labels stay consistent.
+- The `Half price only` filter in product-card channels must use `isHalfPriceItem` from `src/utils/discountTags.js` so filtering and badge labels stay consistent.
+- Product-card channels consume read-only GET product endpoints only. Do not call the slow `POST /<retailer>-data/sync` endpoints from the frontend.
 
 ### Loading
 
@@ -154,6 +160,7 @@ Known regression risks:
 When adding Amazon, Chemist Warehouse, or other retailers:
 
 - Add channel-specific color tokens in `Results.vue`.
+- Prefer a thin wrapper around `RetailerResults.vue` when the endpoint returns the shared product shape from the Lazi API.
 - Keep the shell neutral.
 - Keep channel heading and cards dense and scan-focused.
 - Do not add landing-page copy or metrics.

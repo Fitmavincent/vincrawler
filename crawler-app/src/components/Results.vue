@@ -10,6 +10,12 @@
       <TabPanel header="Woolies">
         <woolies-results ref="wooliesResults" :isActive="activeTab === 2" />
       </TabPanel>
+      <TabPanel header="Chemist Warehouse">
+        <chemist-warehouse-results ref="chemistWarehouseResults" :isActive="activeTab === 3" />
+      </TabPanel>
+      <TabPanel header="Priceline">
+        <priceline-results ref="pricelineResults" :isActive="activeTab === 4" />
+      </TabPanel>
     </TabView>
   </section>
   <BackToTop />
@@ -29,38 +35,35 @@ export default {
   },
   computed: {
     panelClass() {
-      const channelClasses = ['channel-ozb', 'channel-coles', 'channel-woolies'];
+      const channelClasses = ['channel-ozb', 'channel-coles', 'channel-woolies', 'channel-chemist', 'channel-priceline'];
       return channelClasses[this.activeTab] || 'channel-generic';
     }
   },
   mounted() {
     // Get stored tab index or default to 0
     const storedTab = parseInt(localStorage.getItem('activeTab') || '0');
-    this.activeTab = storedTab;
+    this.activeTab = Number.isInteger(storedTab) && storedTab >= 0 && storedTab <= 4 ? storedTab : 0;
 
     // Load data for initial tab
     this.$nextTick(() => {
-      if (storedTab === 0) {
-        this.$refs.ozbResults?.loadData();
-      } else if (storedTab === 1) {
-        this.$refs.colesResults?.loadData();
-      } else {
-        this.$refs.wooliesResults?.loadData();
-      }
+      this.loadActiveTabData(this.activeTab);
     });
   },
   methods: {
     handleTabChange(e) {
       this.activeTab = e.index;
       localStorage.setItem('activeTab', e.index.toString());
-
-      if (e.index === 0) {
-        this.$refs.ozbResults?.loadData();
-      } else if (e.index === 1) {
-        this.$refs.colesResults?.loadData();
-      } else {
-        this.$refs.wooliesResults?.loadData();
-      }
+      this.loadActiveTabData(e.index);
+    },
+    loadActiveTabData(index) {
+      const tabRefs = [
+        this.$refs.ozbResults,
+        this.$refs.colesResults,
+        this.$refs.wooliesResults,
+        this.$refs.chemistWarehouseResults,
+        this.$refs.pricelineResults
+      ];
+      tabRefs[index]?.loadData();
     }
   }
 }
@@ -97,7 +100,21 @@ export default {
   --channel-accent-border: rgba(23, 136, 65, 0.28);
 }
 
+.results-panel.channel-chemist {
+  --channel-accent: #1d4ed8;
+  --channel-accent-soft: #eff6ff;
+  --channel-accent-border: rgba(29, 78, 216, 0.28);
+}
+
+.results-panel.channel-priceline {
+  --channel-accent: #d81b60;
+  --channel-accent-soft: #fdf2f8;
+  --channel-accent-border: rgba(216, 27, 96, 0.28);
+}
+
 :deep(.p-tabview-nav) {
+  width: max-content;
+  min-width: 100%;
   justify-content: flex-start;
   border: 0;
   gap: 0.5rem;
@@ -105,13 +122,15 @@ export default {
   background: transparent;
 }
 
-:deep(.p-tabview-nav-container) {
+:deep(.p-tabview-nav-container),
+:deep(.p-tabview-nav-content) {
   overflow-x: auto;
   overflow-y: visible;
   scrollbar-width: none;
 }
 
-:deep(.p-tabview-nav-container::-webkit-scrollbar) {
+:deep(.p-tabview-nav-container::-webkit-scrollbar),
+:deep(.p-tabview-nav-content::-webkit-scrollbar) {
   display: none;
 }
 
@@ -166,7 +185,8 @@ export default {
     padding: 0.85rem 0.75rem 0.85rem;
   }
 
-  :deep(.p-tabview-nav-container) {
+  :deep(.p-tabview-nav-container),
+  :deep(.p-tabview-nav-content) {
     overflow-x: auto;
     overflow-y: visible;
   }
