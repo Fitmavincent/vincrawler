@@ -8,10 +8,10 @@
     empty-name="Priceline"
     placeholder="Search Priceline specials"
     kicker="Pharmacy specials"
-    accent="#d81b60"
+    accent="#ec2b8c"
     accent-soft="#fdf2f8"
-    accent-ink="#be185d"
-    accent-border="rgba(216, 27, 96, 0.34)"
+    accent-ink="#b80066"
+    accent-border="rgba(236, 43, 140, 0.34)"
   />
 </template>
 

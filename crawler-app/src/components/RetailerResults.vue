@@ -21,6 +21,7 @@
           <h1>{{ title }}</h1>
         </div>
         <span class="channel-badge">{{ badge }}</span>
+        <span v-if="brandStrip" class="channel-brand-strip" aria-hidden="true"></span>
       </div>
 
       <div class="search-row">
@@ -132,6 +133,18 @@ export default {
     accentBorder: {
       type: String,
       required: true
+    },
+    secondaryAccent: {
+      type: String,
+      default: ''
+    },
+    tertiaryAccent: {
+      type: String,
+      default: ''
+    },
+    brandStrip: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -154,7 +167,9 @@ export default {
         '--retailer-accent': this.accent,
         '--retailer-accent-soft': this.accentSoft,
         '--retailer-accent-ink': this.accentInk,
-        '--retailer-accent-border': this.accentBorder
+        '--retailer-accent-border': this.accentBorder,
+        '--retailer-secondary-accent': this.secondaryAccent || this.accent,
+        '--retailer-tertiary-accent': this.tertiaryAccent || this.accent
       };
     },
     filteredResults() {
@@ -271,10 +286,12 @@ export default {
 }
 
 .channel-heading {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
+  overflow: hidden;
   border: 1px solid var(--retailer-accent-border);
   border-left: 0.35rem solid var(--retailer-accent);
   border-radius: 0.85rem;
@@ -304,6 +321,20 @@ h1 {
   background: var(--retailer-accent);
   font-weight: 900;
   white-space: nowrap;
+}
+
+.channel-brand-strip {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 0.28rem;
+  background: linear-gradient(
+    90deg,
+    var(--retailer-accent) 0 34%,
+    var(--retailer-secondary-accent) 34% 67%,
+    var(--retailer-tertiary-accent) 67% 100%
+  );
 }
 
 .search-row {

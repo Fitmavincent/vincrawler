@@ -46,8 +46,8 @@ Channel accent variables are defined in `Results.vue`:
 - OzBargain: `#f37021`
 - Coles: `#e01a22`
 - Woolworths: `#178841`
-- Chemist Warehouse: `#1d4ed8`
-- Priceline: `#d81b60`
+- Chemist Warehouse: `#0054a6` / `rgb(0, 84, 166)` as the blue-led tab accent, with logo-supporting red `#e31e24` / `rgb(227, 30, 36)` and yellow `#ffd200` / `rgb(255, 210, 0)` in the channel header stripe.
+- Priceline: `#ec2b8c` / `rgb(236, 43, 140)` from the live Priceline site pricing color. The site also uses lighter pink `#fc52b1` / `rgb(252, 82, 177)` for large promotional bands; use the stronger `#ec2b8c` for tabs/buttons so white text remains clearer.
 
 Each new channel should add a new class in `Results.vue`, for example:
 
@@ -79,8 +79,8 @@ Current channel files:
 - Shared product-card renderer: `src/components/RetailerResults.vue`.
 - Coles: `src/components/ColesResults.vue`, red-led wrapper.
 - Woolworths: `src/components/WooliesResults.vue`, green-led wrapper.
-- Chemist Warehouse: `src/components/ChemistWarehouseResults.vue`, blue-led wrapper.
-- Priceline: `src/components/PricelineResults.vue`, pink-led wrapper.
+- Chemist Warehouse: `src/components/ChemistWarehouseResults.vue`, blue-led wrapper with an optional red/yellow brand stripe passed into `RetailerResults.vue`.
+- Priceline: `src/components/PricelineResults.vue`, live-site pink wrapper.
 
 ## Components And Styling
 

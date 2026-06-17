@@ -101,15 +101,15 @@ export default {
 }
 
 .results-panel.channel-chemist {
-  --channel-accent: #1d4ed8;
-  --channel-accent-soft: #eff6ff;
-  --channel-accent-border: rgba(29, 78, 216, 0.28);
+  --channel-accent: #0054a6;
+  --channel-accent-soft: #eef6ff;
+  --channel-accent-border: rgba(0, 84, 166, 0.28);
 }
 
 .results-panel.channel-priceline {
-  --channel-accent: #d81b60;
+  --channel-accent: #ec2b8c;
   --channel-accent-soft: #fdf2f8;
-  --channel-accent-border: rgba(216, 27, 96, 0.28);
+  --channel-accent-border: rgba(236, 43, 140, 0.28);
 }
 
 :deep(.p-tabview-nav) {

@@ -8,10 +8,13 @@
     empty-name="Chemist Warehouse"
     placeholder="Search Chemist Warehouse specials"
     kicker="Pharmacy specials"
-    accent="#1d4ed8"
-    accent-soft="#eff6ff"
-    accent-ink="#1e40af"
-    accent-border="rgba(29, 78, 216, 0.34)"
+    accent="#0054a6"
+    accent-soft="#eef6ff"
+    accent-ink="#003f7d"
+    accent-border="rgba(0, 84, 166, 0.34)"
+    secondary-accent="#e31e24"
+    tertiary-accent="#ffd200"
+    brand-strip
   />
 </template>
 
