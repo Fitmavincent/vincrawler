@@ -77,6 +77,15 @@
 
 <script>
 import { discountTagClass, discountTagLabel, isHalfPriceItem } from '../utils/discountTags';
+import { isStale } from '../utils/freshness';
+
+// While the stored data is stale (older than this week's Wed 00:00 AEST
+// specials reset), the very first GET has already asked the server to re-crawl
+// in the background. We poll the same data endpoint until the new week's data
+// lands, then stop. No /sync calls — the GET endpoint is the trigger.
+const REFRESH_POLL_MS = 90000;       // 90s between polls
+const MAX_REFRESH_POLLS = 12;        // ~18 min ceiling (server crawl ~10 min)
+const FETCH_TIMEOUT_MS = 45000;      // generous for Fly cold-start
 
 export default {
   props: {
@@ -134,7 +143,9 @@ export default {
       isLoading: false,
       fullPage: true,
       dataLoaded: false,
-      lastSyncTime: null
+      lastSyncTime: null,
+      refreshTimer: null,
+      refreshPolls: 0
     };
   },
   computed: {
@@ -192,12 +203,12 @@ export default {
       const numericValue = Number(value);
       return Number.isFinite(numericValue) ? numericValue.toFixed(2) : '0.00';
     },
-    async getDefaultResult() {
+    async getDefaultResult({ silent = false } = {}) {
       if (this.isLoading) return;
 
-      this.isLoading = true;
+      if (!silent) this.isLoading = true;
       try {
-        const res = await this.axios.get(this.dataUrl, { timeout: 30000 });
+        const res = await this.axios.get(this.dataUrl, { timeout: FETCH_TIMEOUT_MS });
         const data = Array.isArray(res.data?.data) ? res.data.data : [];
 
         this.allResults = data;
@@ -206,10 +217,35 @@ export default {
         this.dataLoaded = true;
       } catch (error) {
         console.error(`Error fetching ${this.badge} data:`, error);
-        this.allResults = [];
-        this.results = [];
+        // On the very first (non-silent) load only — keep whatever we had on a
+        // failed silent poll so the grid doesn't flash empty between cycles.
+        if (!silent && !this.dataLoaded) {
+          this.allResults = [];
+          this.results = [];
+        }
       } finally {
-        this.isLoading = false;
+        if (!silent) this.isLoading = false;
+        this.scheduleStaleRefresh();
+      }
+    },
+    // If the data we just loaded is stale (before this week's Wed reset), keep
+    // re-fetching in the background until the new week's crawl lands.
+    scheduleStaleRefresh() {
+      this.clearRefreshTimer();
+      if (!isStale(this.lastSyncTime)) {
+        this.refreshPolls = 0;
+        return;
+      }
+      if (this.refreshPolls >= MAX_REFRESH_POLLS) return;
+      this.refreshTimer = setTimeout(() => {
+        this.refreshPolls += 1;
+        this.getDefaultResult({ silent: true });
+      }, REFRESH_POLL_MS);
+    },
+    clearRefreshTimer() {
+      if (this.refreshTimer) {
+        clearTimeout(this.refreshTimer);
+        this.refreshTimer = null;
       }
     },
     searchResult() {
@@ -220,6 +256,9 @@ export default {
       if (this.dataLoaded) return;
       this.getDefaultResult();
     }
+  },
+  unmounted() {
+    this.clearRefreshTimer();
   }
 };
 </script>
