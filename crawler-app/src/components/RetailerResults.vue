@@ -68,6 +68,10 @@
         </div>
       </div>
 
+      <div v-else-if="loadError && !isLoading" class="empty-state" role="alert">
+        <p>Couldn't load {{ emptyName }} deals.</p>
+        <button type="button" class="underline" @click="loadData()">Try again</button>
+      </div>
       <div v-else-if="!isLoading" class="empty-state">
         <i class="pi pi-search"></i>
         <p>No {{ emptyName }} items match these filters.</p>
@@ -85,7 +89,7 @@ import { isStale } from '../utils/freshness';
 // in the background. We poll the same data endpoint until the new week's data
 // lands, then stop. No /sync calls — the GET endpoint is the trigger.
 const REFRESH_POLL_MS = 90000;       // 90s between polls
-const MAX_REFRESH_POLLS = 12;        // ~18 min ceiling (server crawl ~10 min)
+const MAX_REFRESH_POLLS = 30;        // 45 min, including the backend's 30 min cooldown
 const FETCH_TIMEOUT_MS = 45000;      // generous for Fly cold-start
 
 export default {
@@ -154,6 +158,7 @@ export default {
       search: null,
       halfPriceOnly: false,
       isLoading: false,
+      loadError: false,
       fullPage: true,
       dataLoaded: false,
       lastSyncTime: null,
@@ -201,7 +206,7 @@ export default {
   },
   watch: {
     isActive(newVal) {
-      if (newVal && !this.dataLoaded) {
+      if (newVal) {
         this.loadData();
       }
     }
@@ -230,14 +235,12 @@ export default {
         this.results = data;
         this.lastSyncTime = res.data?.synced_at || null;
         this.dataLoaded = true;
+        this.loadError = false;
       } catch (error) {
         console.error(`Error fetching ${this.badge} data:`, error);
         // On the very first (non-silent) load only — keep whatever we had on a
         // failed silent poll so the grid doesn't flash empty between cycles.
-        if (!silent && !this.dataLoaded) {
-          this.allResults = [];
-          this.results = [];
-        }
+        if (!this.dataLoaded) this.loadError = true;
       } finally {
         if (!silent) this.isLoading = false;
         this.scheduleStaleRefresh();
@@ -268,7 +271,8 @@ export default {
     },
     loadData() {
       if (!this.isActive) return;
-      if (this.dataLoaded) return;
+      if (this.dataLoaded && (!isStale(this.lastSyncTime) || this.refreshTimer !== null)) return;
+      this.refreshPolls = 0;
       this.getDefaultResult();
     }
   },

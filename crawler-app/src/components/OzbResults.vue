@@ -40,7 +40,7 @@
       <data-table :resizableColumns="false" columnResizeMode="expand" :value="results" responsiveLayout="scroll" class="result-container">
         <column field="image" header="Image">
           <template #body="slotProps">
-            <a class="deal-image" :href="slotProps.data.link" target="_blank" rel="noreferrer noopener">
+            <a v-if="slotProps.data.image" class="deal-image" :href="slotProps.data.link" target="_blank" rel="noreferrer noopener">
               <img :src="slotProps.data.image" :alt="slotProps.data.image">
             </a>
           </template>
@@ -70,7 +70,11 @@
         </column>
       </data-table>
 
-      <div v-if="results && !results.length && !isLoading" class="empty-state">
+      <div v-if="loadError && !isLoading" class="empty-state" role="alert">
+        <p>Couldn't load Ozbargain deals.</p>
+        <button type="button" class="underline" @click="searchResult(search)">Try again</button>
+      </div>
+      <div v-else-if="results && !results.length && !isLoading" class="empty-state">
         <i class="pi pi-search"></i>
         <p>No Ozbargain deals match this search.</p>
       </div>
@@ -86,56 +90,49 @@ export default {
   data() {
     return {
       ozdataUrl: import.meta.env.VITE_OZB_CRAWLER_URL,
-      wishes: '',
       results: null,
       search: null,
       isLoading: false,
+      loadError: false,
+      requestId: 0,
       fullPage: true
     };
-  },
-  created() {
-
   },
   mounted() {
     this.loadData();
   },
   methods: {
     getDefaultResult() {
-      this.isLoading = true;
-
-      this.axios.get(this.ozdataUrl).then((res) => {
-        this.isLoading = false;
-
-        if(!res.data) return;
-        this.results = this.sortByDate(res.data);
-      });
+      return this.fetchDeals([]);
     },
     searchResult(searchText) {
+      return this.fetchDeals((searchText || '').trim().split(/\s+/).filter(Boolean));
+    },
+    async fetchDeals(terms) {
+      const requestId = ++this.requestId;
       this.isLoading = true;
-
-      if(searchText && searchText != '') {
-        this.axios.get(this.ozdataUrl, {
-          params: {
-            wish: searchText.split(' ')
-          },
+      this.loadError = false;
+      try {
+        const { data } = await this.axios.get(this.ozdataUrl, {
+          timeout: 30000,
+          params: terms.length ? { wish: terms } : undefined,
           paramsSerializer: params => qs.stringify(params, {arrayFormat: 'repeat'})
-        }).then((res) => {
-          this.isLoading = false;
-
-          if(!res.data) return;
-          this.results = this.sortByDate(res.data);
-        })
-      }
-
-      if(searchText == '') {
-        this.getDefaultResult();
+        });
+        if (requestId === this.requestId) this.results = this.sortByDate(data);
+      } catch {
+        if (requestId === this.requestId) {
+          this.results = null;
+          this.loadError = true;
+        }
+      } finally {
+        if (requestId === this.requestId) this.isLoading = false;
       }
     },
     sortByDate(items) {
       return items.sort((a, b) => Date.parse(b.time) - Date.parse(a.time));
     },
     loadData() {
-      if (this.results && !this.forceRefresh) return;
+      if (this.results || this.isLoading) return;
       this.getDefaultResult();
     }
   },
