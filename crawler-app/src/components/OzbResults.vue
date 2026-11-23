@@ -55,7 +55,8 @@
         </column>
         <column field="price" header="Price">
           <template #body="slotProps">
-            <a class="deal-price" :href="slotProps.data.node_url" target="_blank" rel="noreferrer noopener">{{slotProps.data.price}}</a>
+            <a v-if="slotProps.data.price && slotProps.data.node_url" class="deal-price" :href="slotProps.data.node_url" target="_blank" rel="noreferrer noopener">{{slotProps.data.price}}</a>
+            <span v-else class="deal-price">{{ slotProps.data.price }}</span>
           </template>
         </column>
         <!-- <column field="link" header="Link">
